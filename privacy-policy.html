@@ -1,0 +1,234 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Privacy Policy · Web Watermark Tool</title>
+<meta name="description" content="Privacy policy for the Web Watermark Tool Chrome extension. No data collection. No tracking. Local storage only." />
+<style>
+  :root {
+    --bg: #ffffff;
+    --panel: #f8fafc;
+    --text: #0f172a;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --primary: #4f46e5;
+    --code-bg: #f1f5f9;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f172a;
+      --panel: #1e293b;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --border: #334155;
+      --primary: #818cf8;
+      --code-bg: #1e293b;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 40px 20px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                 "Microsoft YaHei", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 16px;
+  }
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 40px 48px;
+  }
+  header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 20px;
+    margin-bottom: 32px;
+  }
+  h1 {
+    margin: 0 0 8px;
+    font-size: 28px;
+    color: var(--primary);
+  }
+  .meta {
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .lang-switch {
+    display: inline-flex;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .lang-switch a {
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .lang-switch a.active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+  }
+  h2 {
+    font-size: 20px;
+    margin-top: 32px;
+    margin-bottom: 12px;
+    color: var(--primary);
+  }
+  h3 {
+    font-size: 16px;
+    margin-top: 20px;
+    margin-bottom: 8px;
+  }
+  p { margin: 8px 0 12px; }
+  ul { padding-left: 24px; margin: 8px 0 16px; }
+  li { margin: 4px 0; }
+  code {
+    background: var(--code-bg);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: "SF Mono", Monaco, Consolas, "Courier New", monospace;
+    font-size: 14px;
+  }
+  a { color: var(--primary); }
+  .lang-block { display: none; }
+  .lang-block.active { display: block; }
+  footer {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 13px;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1 id="pageTitle">隐私政策 · Privacy Policy</h1>
+  <div class="meta">
+    <div><span data-i18n="ext">Web Watermark Tool · 网页水印工具</span></div>
+    <div><span data-i18n="lastUpdated">Last updated</span>: 2026-07-14</div>
+    <div class="lang-switch">
+      <a data-lang="zh" class="active" onclick="switchLang('zh')">中文</a>
+      <a data-lang="en" onclick="switchLang('en')">English</a>
+    </div>
+  </div>
+</header>
+
+<!-- ================= 中文 ================= -->
+<section class="lang-block active" data-lang="zh">
+
+<h2>1. 数据收集</h2>
+<p>网页水印工具（Web Watermark Tool）<strong>不收集、不传输、不共享</strong>任何个人数据、使用行为数据或浏览记录。所有功能均在你的浏览器本地运行。</p>
+
+<h2>2. 数据存储</h2>
+<p>用户配置（匹配规则、水印文字、颜色等）通过 Chrome 内置的 <code>chrome.storage.sync</code> 机制存储。这份数据：</p>
+<ul>
+  <li>由 Google 在传输与存储过程中加密</li>
+  <li>仅在你登录同一 Google 账号的多台 Chrome 实例之间同步</li>
+  <li>本扩展作者及任何第三方均无权访问</li>
+  <li>可通过 Chrome 设置随时清除</li>
+</ul>
+
+<h2>3. 权限说明</h2>
+<p>本扩展在 <code>manifest.json</code> 里申请的权限：</p>
+<ul>
+  <li><code>storage</code> —— 用于把你配置的水印规则持久化保存</li>
+  <li><code>activeTab</code> —— 读取当前活动 tab 的 URL，用于在工具栏图标上显示对应环境的短标签（如 <code>PROD</code>、<code>TEST</code>）</li>
+</ul>
+<p>Content script 通过 <code>&lt;all_urls&gt;</code> 匹配所有 URL，仅用于按用户自定义规则叠加水印。<strong>不读取、不上传</strong>任何页面内容。</p>
+
+<h2>4. 第三方服务</h2>
+<p>本扩展<strong>不与任何外部服务器通信</strong>，不使用 CDN、不加载远程脚本、不接入分析服务（如 Google Analytics、Sentry 等）、不接入广告 SDK。</p>
+
+<h2>5. 儿童隐私</h2>
+<p>本扩展面向开发者与运维人员，不主动收集任何用户信息，因此也不针对 13 岁以下儿童收集数据。</p>
+
+<h2>6. 变更</h2>
+<p>本政策若有更新，将在本页面直接修改。建议定期查看本页面获取最新版本。</p>
+
+<h2>7. 联系方式</h2>
+<p>Bug 反馈 / 隐私相关问题，请到 GitHub Issues 反馈：<br />
+<a href="https://github.com/jinnersun/web-watermark-prompt/issues" target="_blank" rel="noopener">https://github.com/jinnersun/web-watermark-prompt/issues</a></p>
+
+</section>
+
+<!-- ================= English ================= -->
+<section class="lang-block" data-lang="en">
+
+<h2>1. Data Collection</h2>
+<p>The Web Watermark Tool extension does <strong>NOT collect, transmit, or share</strong> any personal data, usage data, or browsing history. All operations happen locally in your browser.</p>
+
+<h2>2. Data Storage</h2>
+<p>User configurations (rules, watermark text, colors, opacity, etc.) are stored using Chrome's built-in <code>chrome.storage.sync</code> mechanism. This data is:</p>
+<ul>
+  <li>Encrypted in transit and at rest by Google</li>
+  <li>Synchronized only between your own logged-in Chrome instances</li>
+  <li>Never accessible to the extension author or any third party</li>
+  <li>Removable at any time via Chrome settings</li>
+</ul>
+
+<h2>3. Permissions Rationale</h2>
+<p>Permissions requested in <code>manifest.json</code>:</p>
+<ul>
+  <li><code>storage</code> — to persist your watermark configurations across sessions</li>
+  <li><code>activeTab</code> — to read the currently active tab's URL for updating the toolbar icon badge with the environment short label (e.g., <code>PROD</code>, <code>TEST</code>)</li>
+</ul>
+<p>The content script's <code>&lt;all_urls&gt;</code> match pattern is used solely to inject the watermark visual layer on any URL the user chooses to watermark via their own rules. <strong>Page content is neither read nor transmitted.</strong></p>
+
+<h2>4. Third-Party Services</h2>
+<p>This extension does <strong>NOT communicate with any external server</strong>. No CDN, no remote script loading, no analytics service (Google Analytics, Sentry, etc.), no advertising SDK.</p>
+
+<h2>5. Children's Privacy</h2>
+<p>This extension is designed for developers and operations engineers. It does not knowingly collect any information from anyone, including children under 13.</p>
+
+<h2>6. Changes</h2>
+<p>Updates to this policy will be reflected directly on this page. Please check periodically for the latest version.</p>
+
+<h2>7. Contact</h2>
+<p>Report bugs or ask privacy-related questions via GitHub Issues:<br />
+<a href="https://github.com/jinnersun/web-watermark-prompt/issues" target="_blank" rel="noopener">https://github.com/jinnersun/web-watermark-prompt/issues</a></p>
+
+</section>
+
+<footer>
+  <p>&copy; 2026 jinnersun · MIT Licensed</p>
+</footer>
+
+</div>
+
+<script>
+  function switchLang(lang) {
+    document.querySelectorAll('.lang-block').forEach(function (el) {
+      el.classList.toggle('active', el.dataset.lang === lang);
+    });
+    document.querySelectorAll('.lang-switch a').forEach(function (el) {
+      el.classList.toggle('active', el.dataset.lang === lang);
+    });
+    document.documentElement.lang = (lang === 'zh') ? 'zh-CN' : 'en';
+    try { localStorage.setItem('privacyLang', lang); } catch (e) {}
+  }
+  // Restore last choice or detect browser language on load
+  (function initLang() {
+    var saved = null;
+    try { saved = localStorage.getItem('privacyLang'); } catch (e) {}
+    if (saved === 'en' || saved === 'zh') { switchLang(saved); return; }
+    var nav = (navigator.language || 'en').toLowerCase();
+    switchLang(nav.indexOf('zh') === 0 ? 'zh' : 'en');
+  })();
+</script>
+
+</body>
+</html>

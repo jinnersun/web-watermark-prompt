@@ -1,5 +1,7 @@
 ﻿# Web Watermark Tool — Config Generator Prompt
 
+> English | [中文](./PROMPT.zh_CN.md)
+
 > **Purpose**: Give this file to an AI assistant. The user will describe their environment setup in plain language, and the AI will output a JSON config array ready to import into the Web Watermark Tool Chrome extension.
 
 ---

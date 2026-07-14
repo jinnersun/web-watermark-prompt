@@ -1,5 +1,7 @@
 ﻿# Web Watermark Prompt
 
+> English | [中文](./README.zh_CN.md)
+
 A ready-to-use prompt for AI assistants (Claude / ChatGPT / Codex / Cursor / Gemini) to help you generate configuration for the **[Web Watermark Tool](https://chromewebstore.google.com/) Chrome extension**.
 
 ## What is this?

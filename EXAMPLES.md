@@ -1,5 +1,7 @@
 ﻿# Real-World Examples
 
+> English | [中文](./EXAMPLES.zh_CN.md)
+
 Five scenarios showing how a user's description maps to a JSON config. Use these as few-shot references when helping users generate configs.
 
 ---
