@@ -16,7 +16,7 @@
 
 - `https://app.example.com/` → 生产
 - `https://test.app.example.com/` → 测试
-- `https://bvi2sim.app.example.com/` → 准生产
+- `https://staging.app.example.com/` → 准生产
 - `https://192.0.2.5/` → 内网管理后台（走 VPN）
 
 每条 **config**（配置）= 一个水印预设（文字、颜色、透明度等）+ 一组 **rules**（规则）决定该预设应用到哪些页面。**任一规则命中即触发水印。** 多条配置同时命中时，**最精确者胜**（host-exact > ip-exact > url-regex > host-suffix > ip-cidr > cookie）。
