@@ -1,4 +1,4 @@
-﻿# Real-World Examples
+# Real-World Examples
 
 > English | [中文](./EXAMPLES.zh_CN.md)
 
@@ -11,9 +11,9 @@ Five scenarios showing how a user's description maps to a JSON config. Use these
 **User input:**
 
 > I have three environments sharing the same base domain:
-> - `https://cust.adentrd.com/` is production
-> - `https://test.cust.adentrd.com/` is test
-> - `https://bvi2sim.cust.adentrd.com/` is pre-production
+> - `https://app.example.com/` is production
+> - `https://test.app.example.com/` is test
+> - `https://staging.app.example.com/` is pre-production
 >
 > I need distinct watermarks so I don't accidentally operate on the wrong one.
 
@@ -24,7 +24,7 @@ Five scenarios showing how a user's description maps to a JSON config. Use these
   {
     "name": "生产环境",
     "shortLabel": "PROD",
-    "rules": [{ "type": "host-exact", "value": "cust.adentrd.com" }],
+    "rules": [{ "type": "host-exact", "value": "app.example.com" }],
     "text": "生产环境 - 请谨慎操作",
     "color": "#ef4444",
     "opacity": 0.15,
@@ -33,7 +33,7 @@ Five scenarios showing how a user's description maps to a JSON config. Use these
   {
     "name": "准生产",
     "shortLabel": "SIM",
-    "rules": [{ "type": "host-exact", "value": "bvi2sim.cust.adentrd.com" }],
+    "rules": [{ "type": "host-exact", "value": "staging.app.example.com" }],
     "text": "准生产环境",
     "color": "#f59e0b",
     "opacity": 0.15
@@ -41,7 +41,7 @@ Five scenarios showing how a user's description maps to a JSON config. Use these
   {
     "name": "测试环境",
     "shortLabel": "TEST",
-    "rules": [{ "type": "host-exact", "value": "test.cust.adentrd.com" }],
+    "rules": [{ "type": "host-exact", "value": "test.app.example.com" }],
     "text": "测试环境",
     "color": "#10b981",
     "opacity": 0.15
@@ -57,7 +57,7 @@ Five scenarios showing how a user's description maps to a JSON config. Use these
 
 **User input:**
 
-> Our admin panel is only accessible over the office VPN at `https://10.20.30.5/`. There's no domain, just the IP. I want a purple watermark saying "Admin — Restricted".
+> Our admin panel is only accessible over the office VPN at `https://192.0.2.5/`. There's no domain, just the IP. I want a purple watermark saying "Admin — Restricted".
 
 **Expected output:**
 
@@ -66,7 +66,7 @@ Five scenarios showing how a user's description maps to a JSON config. Use these
   {
     "name": "管理后台",
     "shortLabel": "ADMIN",
-    "rules": [{ "type": "ip-exact", "value": "10.20.30.5" }],
+    "rules": [{ "type": "ip-exact", "value": "192.0.2.5" }],
     "text": "Admin — Restricted\n仅授权人员访问",
     "color": "#8b5cf6",
     "opacity": 0.18,
@@ -75,7 +75,7 @@ Five scenarios showing how a user's description maps to a JSON config. Use these
 ]
 ```
 
-**Why**: Browser hostname is literally `10.20.30.5`, so `ip-exact` is the right rule. Border ON to reinforce the "restricted" feel.
+**Why**: Browser hostname is literally `192.0.2.5`, so `ip-exact` is the right rule. Border ON to reinforce the "restricted" feel.
 
 ---
 
@@ -109,7 +109,7 @@ Five scenarios showing how a user's description maps to a JSON config. Use these
 
 **User input:**
 
-> On our production site `cust.adentrd.com`, the entire main app is normal but I want a big red DANGER watermark on any URL starting with `/admin`. Regular pages should have no watermark.
+> On our production site `app.example.com`, the entire main app is normal but I want a big red DANGER watermark on any URL starting with `/admin`. Regular pages should have no watermark.
 
 **Expected output:**
 
@@ -119,7 +119,7 @@ Five scenarios showing how a user's description maps to a JSON config. Use these
     "name": "生产管理页",
     "shortLabel": "ADM",
     "rules": [
-      { "type": "url-regex", "value": "^https://cust\\.adentrd\\.com/admin(/.*)?$" }
+      { "type": "url-regex", "value": "^https://app\\.example\\.com/admin(/.*)?$" }
     ],
     "text": "DANGER — 生产管理页面\n此页可修改线上数据",
     "color": "#dc2626",
@@ -138,7 +138,7 @@ Five scenarios showing how a user's description maps to a JSON config. Use these
 
 **User input:**
 
-> We have a canary deployment where the URL is the same as production (`cust.adentrd.com`) but the backend routes based on a cookie `deploy=canary`. When I'm on the canary, I want an orange "CANARY" watermark.
+> We have a canary deployment where the URL is the same as production (`app.example.com`) but the backend routes based on a cookie `deploy=canary`. When I'm on the canary, I want an orange "CANARY" watermark.
 
 **Expected output:**
 
@@ -158,6 +158,28 @@ Five scenarios showing how a user's description maps to a JSON config. Use these
 **Why**: Same URL, same host — the only distinguisher is the cookie. `cookie: deploy=canary` matches exact value. If the value could vary (e.g. `canary-v1`, `canary-v2`), use `deploy~=canary` (contains) instead.
 
 ---
+
+
+---
+
+## Example 6 — Empty or vague input → AI asks back (no JSON)
+
+**User input (empty / only the placeholder):**
+
+> `(describe your production / test / staging / VPN environments here)`
+
+**Expected output (NOT a JSON array):**
+
+> Sure — could you share a bit more so I can generate the right config?
+>
+> 1. How many environments do you need to distinguish (e.g. prod / staging / test / VPN)?
+> 2. What identifies each one — a hostname, full URL, IP, or a Cookie flag?
+> 3. Any preferred watermark text and color, or should I use the defaults (prod=red, staging=amber, test=green, VPN=violet)?
+> 4. Any special needs — inset border, or a short badge label like `PROD` / `TEST`?
+>
+> Reply with the details and I'll return the JSON.
+
+**Why**: The input has no hostname / URL / IP / cookie, so the assistant must **not** invent one. It falls back to a short bulleted question list in the user's language (English here because the message is English). Once the user answers concretely, generate the JSON on the next turn.
 
 ## Notes for AI assistants
 

@@ -1,4 +1,4 @@
-﻿# Web Watermark Prompt
+# Web Watermark Prompt
 
 > English | [中文](./README.zh_CN.md)
 
@@ -20,7 +20,7 @@ If you have Web Watermark Tool **v2.0 or later** installed:
 2. Click **🤖 Let AI write rules for me**
 3. The prompt (this repo's `PROMPT.md`) + your current config snapshot are copied to your clipboard
 4. Paste into ChatGPT / Claude / Codex / Cursor
-5. Describe your environment ("I have a production site at cust.adentrd.com and a test site at test.cust.adentrd.com…")
+5. Describe your environment ("I have a production site at app.example.com and a test site at test.app.example.com…")
 6. The AI replies with a JSON array
 7. Back in the extension, click **📋 Import from clipboard**
 

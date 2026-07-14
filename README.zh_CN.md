@@ -1,4 +1,4 @@
-﻿# Web Watermark Prompt · 网页水印工具 · 提示词仓库
+# Web Watermark Prompt · 网页水印工具 · 提示词仓库
 
 > [English](./README.md) | 中文
 
@@ -20,7 +20,7 @@ Web Watermark Tool 通过灵活的匹配规则（域名 / URL 正则 / IP / Cook
 2. 点击 **🤖 让 AI 帮我写规则**
 3. 提示词（本仓库的 `PROMPT.md`）+ 你当前的配置快照会被复制到剪贴板
 4. 粘贴到 ChatGPT / Claude / Codex / Cursor
-5. 用中文描述你的环境（例如 "我生产站是 cust.adentrd.com，测试站是 test.cust.adentrd.com……"）
+5. 用中文描述你的环境（例如 "我生产站是 app.example.com，测试站是 test.app.example.com……"）
 6. AI 返回一段 JSON 数组
 7. 回到扩展，点 **📋 从剪贴板导入**
 

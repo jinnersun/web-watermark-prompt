@@ -1,4 +1,4 @@
-﻿# 真实场景示例
+# 真实场景示例
 
 > [English](./EXAMPLES.md) | 中文
 
@@ -11,9 +11,9 @@
 **用户输入：**
 
 > 我有 3 个共用同一个根域名的环境：
-> - `https://cust.adentrd.com/` 是生产
-> - `https://test.cust.adentrd.com/` 是测试
-> - `https://bvi2sim.cust.adentrd.com/` 是准生产
+> - `https://app.example.com/` 是生产
+> - `https://test.app.example.com/` 是测试
+> - `https://staging.app.example.com/` 是准生产
 >
 > 我需要用不同的水印区分它们，防止误操作。
 
@@ -24,7 +24,7 @@
   {
     "name": "生产环境",
     "shortLabel": "PROD",
-    "rules": [{ "type": "host-exact", "value": "cust.adentrd.com" }],
+    "rules": [{ "type": "host-exact", "value": "app.example.com" }],
     "text": "生产环境 - 请谨慎操作",
     "color": "#ef4444",
     "opacity": 0.15,
@@ -33,7 +33,7 @@
   {
     "name": "准生产",
     "shortLabel": "SIM",
-    "rules": [{ "type": "host-exact", "value": "bvi2sim.cust.adentrd.com" }],
+    "rules": [{ "type": "host-exact", "value": "staging.app.example.com" }],
     "text": "准生产环境",
     "color": "#f59e0b",
     "opacity": 0.15
@@ -41,7 +41,7 @@
   {
     "name": "测试环境",
     "shortLabel": "TEST",
-    "rules": [{ "type": "host-exact", "value": "test.cust.adentrd.com" }],
+    "rules": [{ "type": "host-exact", "value": "test.app.example.com" }],
     "text": "测试环境",
     "color": "#10b981",
     "opacity": 0.15
@@ -57,7 +57,7 @@
 
 **用户输入：**
 
-> 我们的管理后台只能走公司 VPN 用 `https://10.20.30.5/` 访问，没有域名，直接是 IP。我想用紫色水印标注 "Admin — 受限区域"。
+> 我们的管理后台只能走公司 VPN 用 `https://192.0.2.5/` 访问，没有域名，直接是 IP。我想用紫色水印标注 "Admin — 受限区域"。
 
 **期望输出：**
 
@@ -66,7 +66,7 @@
   {
     "name": "管理后台",
     "shortLabel": "ADMIN",
-    "rules": [{ "type": "ip-exact", "value": "10.20.30.5" }],
+    "rules": [{ "type": "ip-exact", "value": "192.0.2.5" }],
     "text": "Admin — 受限区域\n仅授权人员访问",
     "color": "#8b5cf6",
     "opacity": 0.18,
@@ -75,7 +75,7 @@
 ]
 ```
 
-**为什么这么写**：浏览器 hostname 就是 `10.20.30.5`，用 `ip-exact` 最合适。开启边框强化 "受限" 感。
+**为什么这么写**：浏览器 hostname 就是 `192.0.2.5`，用 `ip-exact` 最合适。开启边框强化 "受限" 感。
 
 ---
 
@@ -109,7 +109,7 @@
 
 **用户输入：**
 
-> 我的生产站 `cust.adentrd.com` 主应用是正常的，但只要 URL 以 `/admin` 开头的页面就要打大红色 DANGER 水印。普通页面不打。
+> 我的生产站 `app.example.com` 主应用是正常的，但只要 URL 以 `/admin` 开头的页面就要打大红色 DANGER 水印。普通页面不打。
 
 **期望输出：**
 
@@ -119,7 +119,7 @@
     "name": "生产管理页",
     "shortLabel": "ADM",
     "rules": [
-      { "type": "url-regex", "value": "^https://cust\\.adentrd\\.com/admin(/.*)?$" }
+      { "type": "url-regex", "value": "^https://app\\.example\\.com/admin(/.*)?$" }
     ],
     "text": "DANGER — 生产管理页面\n此页可修改线上数据",
     "color": "#dc2626",
@@ -138,7 +138,7 @@
 
 **用户输入：**
 
-> 我们有一个灰度部署，URL 跟生产一样是 `cust.adentrd.com`，但后端会根据 `deploy=canary` 这个 cookie 路由。我在灰度上时，希望打橙色 "CANARY" 水印。
+> 我们有一个灰度部署，URL 跟生产一样是 `app.example.com`，但后端会根据 `deploy=canary` 这个 cookie 路由。我在灰度上时，希望打橙色 "CANARY" 水印。
 
 **期望输出：**
 
@@ -158,6 +158,28 @@
 **为什么这么写**：URL、host 完全一样，只有 cookie 能区分。`deploy=canary` 是精确等值。如果 value 可能有多个（如 `canary-v1`、`canary-v2`），改用 `deploy~=canary`（包含）即可。
 
 ---
+
+
+---
+
+## 示例 6 — 空输入或占位符 → AI 反问（不输出 JSON）
+
+**用户输入（空 / 只留了占位符）：**
+
+> `(在这里描述你的生产 / 测试 / 准生产 / VPN 环境)`
+
+**期望输出（不是 JSON 数组）：**
+
+> 好的，能再告诉我几点，我才能生成合适的配置：
+>
+> 1. 需要区分几个环境（如 生产 / 准生产 / 测试 / VPN）？
+> 2. 每个环境用什么来识别 —— hostname、完整 URL、IP，还是 Cookie？
+> 3. 有没有偏好的水印文案和颜色？或者用默认色（生产=红、准生产=橙、测试=绿、VPN=紫）？
+> 4. 有无特殊需求 —— 沉浸式边框，或者短标签（如 `PROD` / `TEST`）？
+>
+> 补上这些信息，我下一轮就返回 JSON。
+
+**为什么这么写**：输入里没有 hostname / URL / IP / Cookie，AI 不能凭空捏造，必须**用户的语言**反问 4 个问题（这里是中文，因为用户消息包含中文字符）。用户答完再生成 JSON。
 
 ## AI 助手须知
 

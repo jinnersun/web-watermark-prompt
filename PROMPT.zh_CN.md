@@ -1,4 +1,4 @@
-﻿# Web Watermark Tool · 配置生成器提示词
+# Web Watermark Tool · 配置生成器提示词
 
 > [English](./PROMPT.md) | 中文
 
@@ -14,10 +14,10 @@
 
 网页水印工具会在符合用户自定义规则的网页上叠加一层自定义水印。典型用途是帮助开发者区分**生产环境**和**测试 / 准生产 / VPN 内网**——尤其在它们共用同一根域名的时候。例如：
 
-- `https://cust.adentrd.com/` → 生产
-- `https://test.cust.adentrd.com/` → 测试
-- `https://bvi2sim.cust.adentrd.com/` → 准生产
-- `https://10.20.30.5/` → 内网管理后台（走 VPN）
+- `https://app.example.com/` → 生产
+- `https://test.app.example.com/` → 测试
+- `https://bvi2sim.app.example.com/` → 准生产
+- `https://192.0.2.5/` → 内网管理后台（走 VPN）
 
 每条 **config**（配置）= 一个水印预设（文字、颜色、透明度等）+ 一组 **rules**（规则）决定该预设应用到哪些页面。**任一规则命中即触发水印。** 多条配置同时命中时，**最精确者胜**（host-exact > ip-exact > url-regex > host-suffix > ip-cidr > cookie）。
 
@@ -28,7 +28,7 @@
 ### 1. `host-exact` — 精确域名匹配
 
 ```json
-{ "type": "host-exact", "value": "cust.adentrd.com" }
+{ "type": "host-exact", "value": "app.example.com" }
 ```
 
 - 仅当 `window.location.hostname === value` 时命中
@@ -37,18 +37,18 @@
 ### 2. `host-suffix` — 域名后缀匹配
 
 ```json
-{ "type": "host-suffix", "value": "adentrd.com" }
+{ "type": "host-suffix", "value": "example.com" }
 ```
 
 - 当 hostname 等于 `value` 或以 `.` + `value` 结尾时命中
-- 上例会匹配 `cust.adentrd.com`、`test.cust.adentrd.com`、`adentrd.com` 本身
-- 不会匹配 `evil-adentrd.com`（有点号边界保护）
+- 上例会匹配 `app.example.com`、`test.app.example.com`、`example.com` 本身
+- 不会匹配 `evil-example.com`（有点号边界保护）
 - 用于"X 的所有子域"
 
 ### 3. `url-regex` — URL 正则
 
 ```json
-{ "type": "url-regex", "value": "^https://cust\\.adentrd\\.com/admin(/.*)?$" }
+{ "type": "url-regex", "value": "^https://app\\.example\\.com/admin(/.*)?$" }
 ```
 
 - 完整 URL 用 `new RegExp(value)` 测试
@@ -60,7 +60,7 @@
 ### 4. `ip-exact` — IPv4 字面量精确匹配
 
 ```json
-{ "type": "ip-exact", "value": "10.20.30.5" }
+{ "type": "ip-exact", "value": "192.0.2.5" }
 ```
 
 - 当浏览器地址栏 hostname 就是 IPv4 字面量且等于 `value` 时命中
@@ -70,11 +70,11 @@
 ### 5. `ip-cidr` — IPv4 CIDR 网段
 
 ```json
-{ "type": "ip-cidr", "value": "10.20.30.0/24" }
+{ "type": "ip-cidr", "value": "192.0.2.0/24" }
 ```
 
 - 当 hostname 是 IPv4 且落在 CIDR 范围内时命中
-- `/24` = 256 个地址（`10.20.30.0` ～ `10.20.30.255`）
+- `/24` = 256 个地址（`192.0.2.0` ～ `192.0.2.255`）
 - `/16` = 65536 个地址
 - 用于整个内网网段
 
@@ -100,7 +100,7 @@
   "shortLabel": "PROD",
   "enabled": true,
   "rules": [
-    { "type": "host-exact", "value": "cust.adentrd.com" }
+    { "type": "host-exact", "value": "app.example.com" }
   ],
   "text": "生产环境 - 请谨慎操作",
   "color": "#ef4444",
@@ -170,7 +170,7 @@
 5. `ip-cidr`
 6. `cookie`
 
-**设计建议**：想让某条规则覆盖一条更宽泛的规则，就用更精确的类型。例如 `host-suffix: adentrd.com` 把所有子域都打红了，但你希望 `cust.adentrd.com` 单独打绿，就再加一条 `host-exact: cust.adentrd.com` + 绿色配置。
+**设计建议**：想让某条规则覆盖一条更宽泛的规则，就用更精确的类型。例如 `host-suffix: example.com` 把所有子域都打红了，但你希望 `app.example.com` 单独打绿，就再加一条 `host-exact: app.example.com` + 绿色配置。
 
 ## 输出契约
 
@@ -193,6 +193,18 @@
 7. **用户描述模糊时**遵循上面的"环境色规范"
 8. **多个环境**时数组里输出多条配置
 
+
+### 兜底：用户输入为空或信息不足时
+
+**当用户输入为空、只有空白字符、只留了占位符原文（例如 `(在这里描述你的环境 / describe your environments here)` 或 HTML 注释模板），或没有任何可识别的环境信息（没有出现 hostname / URL / IP / Cookie）时，不要输出 JSON 数组。** 改为用**用户使用的语言**（默认英文；一旦检测到任何中文字符即切中文）用简短的项目符号反问：
+
+1. 需要区分几个环境（如 生产 / 准生产 / 测试 / VPN）
+2. 每个环境的标识（hostname、URL、IP 或 Cookie）
+3. 偏好的水印文案和颜色（或 `"用默认"`）
+4. 有无特殊需求（沉浸式边框、短标签 / badge）
+
+只有等用户补齐具体信息后，再按上面的输出契约输出 JSON 数组。
+
 ## 歧义处理
 
 - **用户说"域名"但只给了一个 URL** → 默认用 `host-exact`。如果 URL 有子域且看起来像通配，先问 "你希望匹配所有子域吗？" 再生成
@@ -207,3 +219,17 @@
 ---
 
 **用户输入从下面开始：**
+
+## 你的场景
+
+<!--
+把下面这段替换成你的实际情况。示例：
+
+  我有 3 个环境共用 `app.example.com` 这个根域名：
+  - `app.example.com` 是生产（红色，PROD 标签）
+  - `test.app.example.com` 是测试（绿色）
+  - `staging.app.example.com` 是准生产（橙色）
+  我还通过 VPN 用 `192.0.2.5` 访问一个管理后台，希望紫色 + "Admin" 标签。
+-->
+
+(在这里描述你的生产 / 测试 / 准生产 / VPN 环境)
