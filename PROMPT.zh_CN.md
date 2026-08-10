@@ -128,7 +128,7 @@
 | 字段 | 类型 | 默认值 | 说明 |
 |---|---|---|---|
 | `name` | string | 必填 | 侧栏展示的可读名称 |
-| `shortLabel` | string ≤ 4 字符 | `""` | 工具栏图标 badge（如 `PROD`、`TEST`、`DEV`） |
+| `shortLabel` | string ≤ 4 个半角字符 | `""` | 工具栏图标 badge（如 `PROD`、`TEST`、`DEV`）。按显示宽度计算，上限 4：半角字符算 1，中日韩全角字符算 2（所以中文最多 2 个字，如 `数科`）。建议用英文简写。 |
 | `enabled` | bool | `true` | 该配置是否启用 |
 | `rules` | array | 必填 | 至少 1 条规则；任一命中即触发 |
 | `text` | string | 必填 | 水印文字。换行用 `\n` |

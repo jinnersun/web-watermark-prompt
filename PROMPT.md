@@ -128,7 +128,7 @@ Use when the same URL routes to different backends via a cookie flag.
 | Field | Type | Default | Notes |
 |---|---|---|---|
 | `name` | string | required | Human-readable name shown in the extension sidebar |
-| `shortLabel` | string ≤ 4 chars | `""` | Shown on the toolbar icon badge (e.g. `PROD`, `TEST`, `DEV`) |
+| `shortLabel` | string ≤ 4 half-width chars | `""` | Shown on the toolbar icon badge (e.g. `PROD`, `TEST`, `DEV`). Budget is 4 display-width units: ASCII counts as 1, CJK/full-width as 2 (so `数科` is the max for Chinese). Prefer ASCII abbreviations. |
 | `enabled` | bool | `true` | Whether this config is active |
 | `rules` | array | required | 1+ rules; any match triggers the watermark |
 | `text` | string | required | Watermark text. Line breaks with `\n`. |
