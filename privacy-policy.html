@@ -1,10 +1,11 @@
-﻿<!DOCTYPE html>
-<html lang="zh-CN">
+<!DOCTYPE html>
+<html lang="zh-Hans">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Privacy Policy · Web Watermark Tool</title>
 <meta name="description" content="Privacy policy for the Web Watermark Tool Chrome extension. No data collection. No tracking. Local storage only." />
+<link rel="canonical" href="https://jinnersun.github.io/web-watermark-prompt/privacy-policy.html" />
 <style>
   :root {
     --bg: #ffffff;
@@ -146,8 +147,8 @@
 <p>本扩展在 <code>manifest.json</code> 里申请的权限：</p>
 <ul>
   <li><code>storage</code> —— 用于把你配置的水印规则持久化保存</li>
-  <li><code>activeTab</code> —— 读取当前活动 tab 的 URL，用于在工具栏图标上显示对应环境的短标签（如 <code>PROD</code>、<code>TEST</code>）</li>
 </ul>
+<p>这是本扩展申请的<strong>唯一一个</strong>权限。工具栏图标上的环境短标签（如 <code>PROD</code>、<code>TEST</code>）由页面内的 content script 主动上报命中结果实现，无需 <code>activeTab</code> 或任何额外的主机权限。</p>
 <p>Content script 通过 <code>&lt;all_urls&gt;</code> 匹配所有 URL，仅用于按用户自定义规则叠加水印。<strong>不读取、不上传</strong>任何页面内容。</p>
 
 <h2>4. 第三方服务</h2>
@@ -184,8 +185,8 @@
 <p>Permissions requested in <code>manifest.json</code>:</p>
 <ul>
   <li><code>storage</code> — to persist your watermark configurations across sessions</li>
-  <li><code>activeTab</code> — to read the currently active tab's URL for updating the toolbar icon badge with the environment short label (e.g., <code>PROD</code>, <code>TEST</code>)</li>
 </ul>
+<p>This is the <strong>only</strong> permission the extension requests. The environment short label on the toolbar icon (e.g., <code>PROD</code>, <code>TEST</code>) is driven by the in-page content script reporting its own match result, so no <code>activeTab</code> or additional host permission is needed.</p>
 <p>The content script's <code>&lt;all_urls&gt;</code> match pattern is used solely to inject the watermark visual layer on any URL the user chooses to watermark via their own rules. <strong>Page content is neither read nor transmitted.</strong></p>
 
 <h2>4. Third-Party Services</h2>
@@ -217,7 +218,7 @@
     document.querySelectorAll('.lang-switch a').forEach(function (el) {
       el.classList.toggle('active', el.dataset.lang === lang);
     });
-    document.documentElement.lang = (lang === 'zh') ? 'zh-CN' : 'en';
+    document.documentElement.lang = (lang === 'zh') ? 'zh-Hans' : 'en';
     try { localStorage.setItem('privacyLang', lang); } catch (e) {}
   }
   // Restore last choice or detect browser language on load
