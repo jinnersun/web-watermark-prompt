@@ -2,7 +2,9 @@
 
 > English | [中文](./README.zh_CN.md)
 
-A ready-to-use prompt for AI assistants (Claude / ChatGPT / Codex / Cursor / Gemini) to help you generate configuration for the **[Web Watermark Tool](https://chromewebstore.google.com/) Chrome extension**.
+**Website:** https://jinnersun.github.io/web-watermark-prompt/
+
+A ready-to-use prompt for AI assistants (Claude / ChatGPT / Codex / Cursor / Gemini) to help you generate configuration for the **[Web Watermark Tool](https://jinnersun.github.io/web-watermark-prompt/) Chrome extension**.
 
 ## What is this?
 
@@ -54,5 +56,6 @@ If you have Web Watermark Tool **v2.0 or later** installed:
 
 ## Related
 
-- **Web Watermark Tool** Chrome extension: [Chrome Web Store link — coming soon]
+- **Web Watermark Tool** website: https://jinnersun.github.io/web-watermark-prompt/
+- **Chrome Web Store**: not yet published
 - **Source code**: [private for now, will open source after v3.0]

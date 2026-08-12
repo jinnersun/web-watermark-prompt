@@ -2,7 +2,9 @@
 
 > [English](./README.md) | 中文
 
-一份可以直接给 AI 助手（Claude / ChatGPT / Codex / Cursor / Gemini）使用的提示词，帮助你为 **[Web Watermark Tool](https://chromewebstore.google.com/) 网页水印工具** Chrome 扩展生成配置。
+**官网：** https://jinnersun.github.io/web-watermark-prompt/
+
+一份可以直接给 AI 助手（Claude / ChatGPT / Codex / Cursor / Gemini）使用的提示词，帮助你为 **[Web Watermark Tool](https://jinnersun.github.io/web-watermark-prompt/) 网页水印工具** Chrome 扩展生成配置。
 
 ## 这是什么？
 
@@ -55,5 +57,6 @@ Web Watermark Tool 通过灵活的匹配规则（域名 / URL 正则 / IP / Cook
 
 ## 相关链接
 
-- **Web Watermark Tool** Chrome 扩展：[Chrome Web Store 链接 — 上架中]
+- **Web Watermark Tool** 官网：https://jinnersun.github.io/web-watermark-prompt/
+- **Chrome 应用商店**：尚未上架
 - **扩展源代码**：[v2.0 期间闭源，v3.0 后可能开源]
