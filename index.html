@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Web Watermark Tool — Never Deploy to the Wrong Environment Again</title>
+<meta name="description" content="A Chrome extension that watermarks web pages by domain, URL, IP, or cookie so you can tell production from test at a glance. Free, one permission, zero network requests." />
+<link rel="canonical" href="https://jinnersun.github.io/web-watermark-prompt/" />
+<link rel="alternate" hreflang="en" href="https://jinnersun.github.io/web-watermark-prompt/" />
+<link rel="alternate" hreflang="zh-Hans" href="https://jinnersun.github.io/web-watermark-prompt/index.zh.html" />
+<link rel="alternate" hreflang="x-default" href="https://jinnersun.github.io/web-watermark-prompt/" />
+<link rel="icon" type="image/png" href="./assets/icon-128.png" />
+
+<!-- GSC meta-tag verification: paste the google-site-verification tag here after this page is live.
+     File-based verification via googled3a11b0a36ad28b1.html is already active; this is a redundant backup. -->
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Web Watermark Tool — Never Deploy to the Wrong Environment Again" />
+<meta property="og:description" content="Watermark web pages by domain, URL, IP, or cookie. Tell production from test at a glance. Free, one permission, zero network requests." />
+<meta property="og:url" content="https://jinnersun.github.io/web-watermark-prompt/" />
+<meta property="og:image" content="https://jinnersun.github.io/web-watermark-prompt/assets/og-image.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Web Watermark Tool — Never Deploy to the Wrong Environment Again" />
+<meta name="twitter:description" content="Watermark web pages by domain, URL, IP, or cookie. Free, one permission, zero network requests." />
+<meta name="twitter:image" content="https://jinnersun.github.io/web-watermark-prompt/assets/og-image.png" />
+
+<style>
+  :root {
+    --bg: #ffffff;
+    --panel: #f8fafc;
+    --text: #0f172a;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --primary: #4f46e5;
+    --code-bg: #f1f5f9;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f172a;
+      --panel: #1e293b;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --border: #334155;
+      --primary: #818cf8;
+      --code-bg: #1e293b;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                 "Microsoft YaHei", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 16px;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 20px; }
+  a { color: var(--primary); }
+
+  .topbar {
+    display: flex; justify-content: flex-end; gap: 8px;
+    padding: 16px 0;
+  }
+  .topbar a {
+    padding: 4px 10px; border-radius: 999px;
+    border: 1px solid var(--border); color: var(--muted);
+    text-decoration: none; font-size: 13px;
+  }
+  .topbar a.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+  header.hero { text-align: center; padding: 24px 0 8px; }
+  h1 { font-size: 34px; line-height: 1.3; margin: 0 0 12px; }
+  .sub { font-size: 18px; color: var(--muted); margin: 0 auto 24px; max-width: 620px; }
+
+  .cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 14px; }
+  .btn {
+    display: inline-block; padding: 12px 22px; border-radius: 8px;
+    font-size: 15px; font-weight: 600; text-decoration: none;
+    border: 1px solid transparent; cursor: pointer;
+    font-family: inherit;
+  }
+  .btn-primary { background: var(--primary); color: #fff; }
+  .btn-primary:disabled { background: var(--muted); cursor: not-allowed; opacity: .65; }
+  .btn-secondary { background: transparent; color: var(--primary); border-color: var(--border); }
+
+  .trust { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
+
+  .shot {
+    width: 100%; height: auto; display: block;
+    border: 1px solid var(--border); border-radius: 12px; margin: 8px 0 40px;
+  }
+
+  section { padding: 8px 0 32px; }
+  h2 { font-size: 24px; margin: 32px 0 14px; }
+  h3 { font-size: 17px; margin: 20px 0 6px; }
+
+  .card {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 12px; padding: 18px 22px; margin: 14px 0;
+  }
+
+  .rule-table { width: 100%; border-collapse: collapse; font-size: 15px; margin: 14px 0; }
+  .rule-table th, .rule-table td {
+    text-align: left; padding: 10px 12px;
+    border-bottom: 1px solid var(--border); vertical-align: top;
+  }
+  .rule-table th { color: var(--muted); font-weight: 600; font-size: 13px; text-transform: uppercase; }
+
+  code {
+    background: var(--code-bg); padding: 2px 6px; border-radius: 4px;
+    font-family: "SF Mono", Monaco, Consolas, "Courier New", monospace;
+    font-size: 14px;
+  }
+
+  .privacy { border-left: 3px solid var(--primary); }
+  .privacy ul { margin: 8px 0 0; padding-left: 22px; }
+
+  .faq h3 { margin-top: 22px; }
+  .faq p { margin: 6px 0 0; }
+
+  footer {
+    margin-top: 48px; padding: 24px 0 40px;
+    border-top: 1px solid var(--border);
+    color: var(--muted); font-size: 13px; text-align: center;
+  }
+  footer a { margin: 0 8px; }
+
+  @media (max-width: 600px) {
+    h1 { font-size: 27px; }
+    .sub { font-size: 16px; }
+    .rule-table { font-size: 14px; }
+    .rule-table th, .rule-table td { padding: 8px 6px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<nav class="topbar">
+  <a href="./" class="active">English</a>
+  <a href="./index.zh.html">中文</a>
+</nav>
+
+<header class="hero">
+  <h1>Never Deploy to the Wrong Environment Again</h1>
+  <p class="sub">Web Watermark Tool overlays a clear watermark on any page matching your rules — by domain, URL, IP, or cookie — so you always know whether you're on production or test.</p>
+  <div class="cta-row">
+    <button class="btn btn-primary" disabled aria-disabled="true">Coming to Chrome Web Store</button>
+    <a class="btn btn-secondary" href="https://github.com/jinnersun/web-watermark-prompt">Get early access on GitHub</a>
+  </div>
+  <p class="trust">Free · No account · 1 permission · Zero network requests</p>
+</header>
+
+<img class="shot" src="./assets/screenshot-main.png" alt="Web Watermark Tool options page showing environment rules and live preview" width="1280" height="800" loading="eager" />
+
+<section>
+  <h2>The problem</h2>
+
+  <div class="card">
+    <h3>Test and production share a root domain</h3>
+    <p><code>test.app.example.com</code> and <code>app.example.com</code> look nearly identical in a browser tab. One misplaced click runs your test script against live data.</p>
+  </div>
+
+  <div class="card">
+    <h3>Internal tools accessed by raw IP over VPN</h3>
+    <p>An admin panel at <code>https://192.0.2.5/</code> gives you no visual clue about what you're connected to. There's no domain name to read.</p>
+  </div>
+
+  <div class="card">
+    <h3>Canary rollouts on an identical URL</h3>
+    <p>The backend routes on a cookie like <code>deploy=canary</code>. Same host, same path, completely different environment — and nothing on screen says so.</p>
+  </div>
+</section>
+
+<img class="shot" src="./assets/screenshot-scenario.png" alt="A production page with a red watermark and inset border warning" width="1280" height="800" loading="lazy" />
+
+<section>
+  <h2>Six rule types</h2>
+  <p>A configuration fires when any of its rules match. When several configurations match at once, the most specific rule wins.</p>
+
+  <table class="rule-table">
+    <thead>
+      <tr><th>Type</th><th>Matches</th><th>Example</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>host-exact</code></td><td>Hostname equals the value exactly</td><td><code>app.example.com</code></td></tr>
+      <tr><td><code>host-suffix</code></td><td>Hostname and all its subdomains</td><td><code>example.com</code></td></tr>
+      <tr><td><code>url-regex</code></td><td>Full URL against a regular expression</td><td><code>^https?://.*/admin(/.*)?$</code></td></tr>
+      <tr><td><code>ip-exact</code></td><td>Hostname is exactly this IP</td><td><code>192.0.2.5</code></td></tr>
+      <tr><td><code>ip-cidr</code></td><td>Hostname is an IPv4 in this subnet</td><td><code>10.0.0.0/8</code></td></tr>
+      <tr><td><code>cookie</code></td><td>Cookie name, exact value, or contains</td><td><code>deploy=canary</code></td></tr>
+    </tbody>
+  </table>
+
+  <p><a href="./examples.html">See five worked examples →</a></p>
+</section>
+
+<section>
+  <h2>What makes it usable</h2>
+
+  <div class="card">
+    <h3>Smart contrast color</h3>
+    <p>A watermark that disappears against some backgrounds is worse than none. This one inverts against whatever is behind it using CSS <code>mix-blend-mode</code>, so it stays readable on light pages, dark pages, and gradients alike.</p>
+  </div>
+
+  <div class="card">
+    <h3>Immersive border</h3>
+    <p>You stop noticing a watermark you see all day. A border around the viewport edge catches peripheral vision instead, which is why production deserves one.</p>
+  </div>
+
+  <div class="card">
+    <h3>Fades while you work</h3>
+    <p>A permanent overlay gets in the way of reading. The watermark dims during heavy typing and clicking, then comes back a couple of seconds after you stop.</p>
+  </div>
+
+  <div class="card">
+    <h3>Toolbar badge</h3>
+    <p>A short label such as <code>PROD</code> or <code>TEST</code> sits on the extension icon, so you can check the environment without even looking at the page.</p>
+  </div>
+</section>
+
+<img class="shot" src="./assets/screenshot-smartcolor.png" alt="The same watermark staying legible over light, dark, and gradient backgrounds" width="1280" height="800" loading="lazy" />
+
+<section>
+  <h2>Privacy</h2>
+  <div class="card privacy">
+    <p>This extension requests <strong>one permission</strong>: <code>storage</code>.</p>
+    <ul>
+      <li>No network requests of any kind — no CDN, no analytics, no remote scripts</li>
+      <li>No data collection, no usage tracking, no third-party services</li>
+      <li>Your rules live in your own Chrome account via <code>chrome.storage.sync</code>, readable by nobody else</li>
+      <li>Page content is never read or transmitted</li>
+    </ul>
+    <p><a href="./privacy-policy.html">Read the full privacy policy →</a></p>
+  </div>
+</section>
+
+<section class="faq">
+  <h2>Questions</h2>
+
+  <h3>Is Web Watermark Tool free?</h3>
+  <p>Yes — every feature is free, with no account, no sign-in, and no in-app purchases. There is no paid tier.</p>
+
+  <h3>Can it tell environments apart when they share the same domain?</h3>
+  <p>Yes. Use a <code>cookie</code> rule when the backend distinguishes environments by cookie, or a <code>url-regex</code> rule when they differ by path. Both work on hosts that are otherwise identical.</p>
+
+  <h3>Does it collect any data?</h3>
+  <p>No. The extension requests only the <code>storage</code> permission and makes zero network requests. Nothing about your browsing leaves your machine.</p>
+
+  <h3>Can I mark environments I reach by IP address?</h3>
+  <p>Yes. Use <code>ip-exact</code> for a single address such as <code>192.0.2.5</code>, or <code>ip-cidr</code> to cover a whole subnet such as <code>10.0.0.0/8</code>. This is the usual case for VPN-only internal tools.</p>
+
+  <h3>How do I share configuration with my team?</h3>
+  <p>Export your configurations to JSON and let teammates import the file. The same export also moves your setup between machines.</p>
+
+  <h3>What languages does the extension support?</h3>
+  <p>Five: English, Simplified Chinese, Traditional Chinese, Japanese, and Spanish. It follows your browser language and can be switched at any time.</p>
+</section>
+
+<footer>
+  <a href="https://github.com/jinnersun/web-watermark-prompt">GitHub</a>
+  <a href="./privacy-policy.html">Privacy</a>
+  <a href="https://github.com/jinnersun/web-watermark-prompt/issues">Feedback</a>
+  <a href="./index.zh.html">中文</a>
+  <p>&copy; 2026 jinnersun &middot; MIT Licensed</p>
+</footer>
+
+</div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Web Watermark Tool",
+  "description": "Chrome extension that overlays environment watermarks on web pages matched by domain, URL, IP, or cookie.",
+  "applicationCategory": "BrowserApplication",
+  "operatingSystem": "Chrome",
+  "url": "https://jinnersun.github.io/web-watermark-prompt/",
+  "inLanguage": ["en", "zh-CN", "zh-TW", "ja", "es"],
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "featureList": [
+    "Match pages by exact hostname",
+    "Match pages by host suffix including subdomains",
+    "Match pages by full URL regular expression",
+    "Match pages by exact IP address",
+    "Match pages by IPv4 CIDR subnet",
+    "Match pages by cookie name and value",
+    "Smart contrast watermark color",
+    "Immersive viewport border",
+    "Watermark fade during interaction",
+    "Toolbar environment badge",
+    "JSON import and export"
+  ],
+  "author": {
+    "@type": "Person",
+    "name": "jinnersun",
+    "url": "https://github.com/jinnersun"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "jinnersun",
+  "url": "https://jinnersun.github.io/web-watermark-prompt/",
+  "sameAs": ["https://github.com/jinnersun"]
+}
+</script>
+
+</body>
+</html>
