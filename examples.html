@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Rule Examples — Web Watermark Tool</title>
+<meta name="description" content="Five real-world watermark rule examples: same-domain environments, VPN internal IP, whole subnets, path-based admin routing, and cookie-driven canary deployments." />
+<link rel="canonical" href="https://jinnersun.github.io/web-watermark-prompt/examples.html" />
+<link rel="alternate" hreflang="en" href="https://jinnersun.github.io/web-watermark-prompt/examples.html" />
+<link rel="alternate" hreflang="zh-Hans" href="https://jinnersun.github.io/web-watermark-prompt/examples.zh.html" />
+<link rel="alternate" hreflang="x-default" href="https://jinnersun.github.io/web-watermark-prompt/examples.html" />
+<link rel="icon" type="image/png" href="./assets/icon-128.png" />
+
+<style>
+  :root {
+    --bg: #ffffff;
+    --panel: #f8fafc;
+    --text: #0f172a;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --primary: #4f46e5;
+    --code-bg: #f1f5f9;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f172a;
+      --panel: #1e293b;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --border: #334155;
+      --primary: #818cf8;
+      --code-bg: #1e293b;
+    }
+    nav.topbar a.active { color: #0f172a; }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                 "Microsoft YaHei", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 16px;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 20px; }
+  a { color: var(--primary); }
+
+  .topbar {
+    display: flex; justify-content: flex-end; gap: 8px;
+    padding: 16px 0;
+  }
+  .topbar a {
+    padding: 4px 10px; border-radius: 999px;
+    border: 1px solid var(--border); color: var(--muted);
+    text-decoration: none; font-size: 13px;
+  }
+  .topbar a.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+  header.hero { text-align: center; padding: 24px 0 8px; }
+  h1 { font-size: 34px; line-height: 1.3; margin: 0 0 12px; }
+  .sub { font-size: 18px; color: var(--muted); margin: 0 auto 24px; max-width: 620px; }
+
+  .cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 14px; }
+  .btn {
+    display: inline-block; padding: 12px 22px; border-radius: 8px;
+    font-size: 15px; font-weight: 600; text-decoration: none;
+    border: 1px solid transparent; cursor: pointer;
+    font-family: inherit;
+  }
+  .btn-primary { background: var(--primary); color: #fff; }
+  .btn-primary:disabled { background: var(--muted); cursor: not-allowed; opacity: .65; }
+  .btn-secondary { background: transparent; color: var(--primary); border-color: var(--border); }
+
+  .trust { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
+
+  .shot {
+    width: 100%; height: auto; display: block;
+    border: 1px solid var(--border); border-radius: 12px; margin: 8px 0 40px;
+  }
+
+  section { padding: 8px 0 32px; }
+  h2 { font-size: 24px; margin: 32px 0 14px; }
+  h3 { font-size: 17px; margin: 20px 0 6px; }
+
+  .card {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 12px; padding: 18px 22px; margin: 14px 0;
+  }
+
+  .rule-table { width: 100%; border-collapse: collapse; font-size: 15px; margin: 14px 0; }
+  .rule-table th, .rule-table td {
+    text-align: left; padding: 10px 12px;
+    border-bottom: 1px solid var(--border); vertical-align: top;
+    overflow-wrap: anywhere;
+  }
+  .rule-table th { color: var(--muted); font-weight: 600; font-size: 13px; text-transform: uppercase; }
+
+  code {
+    background: var(--code-bg); padding: 2px 6px; border-radius: 4px;
+    font-family: "SF Mono", Monaco, Consolas, "Courier New", monospace;
+    font-size: 14px;
+  }
+
+  .privacy { border-left: 3px solid var(--primary); }
+  .privacy ul { margin: 8px 0 0; padding-left: 22px; }
+
+  .faq h3 { margin-top: 22px; }
+  .faq p { margin: 6px 0 0; }
+
+  footer {
+    margin-top: 48px; padding: 24px 0 40px;
+    border-top: 1px solid var(--border);
+    color: var(--muted); font-size: 13px; text-align: center;
+  }
+  footer a { margin: 0 8px; }
+
+  @media (max-width: 600px) {
+    h1 { font-size: 27px; }
+    .sub { font-size: 16px; }
+    .rule-table { font-size: 14px; }
+    .rule-table th, .rule-table td { padding: 8px 6px; }
+  }
+
+  pre {
+    background: var(--code-bg); border: 1px solid var(--border);
+    border-radius: 8px; padding: 14px 16px; overflow-x: auto;
+    font-family: "SF Mono", Monaco, Consolas, "Courier New", monospace;
+    font-size: 13px; line-height: 1.5;
+  }
+  pre code { background: none; padding: 0; font-size: inherit; }
+  blockquote {
+    margin: 10px 0; padding: 10px 16px;
+    border-left: 3px solid var(--border); color: var(--muted);
+  }
+  .why { font-size: 15px; }
+  .back { display: inline-block; margin: 8px 0 24px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<nav class="topbar">
+  <a href="./examples.html" class="active">English</a>
+  <a href="./examples.zh.html">中文</a>
+</nav>
+
+<h1>Rule Examples</h1>
+<p class="sub">Five real scenarios, each showing a plain-language description, the JSON configuration it maps to, and why that rule type is the right choice.</p>
+<a class="back" href="./">← Back to overview</a>
+
+<section>
+  <h2>1. Same-domain multi-environment</h2>
+
+  <blockquote>
+    <p>I have three environments sharing the same base domain:</p>
+    <ul>
+      <li><code>https://app.example.com/</code> is production</li>
+      <li><code>https://test.app.example.com/</code> is test</li>
+      <li><code>https://staging.app.example.com/</code> is pre-production</li>
+    </ul>
+    <p>I need distinct watermarks so I don't accidentally operate on the wrong one.</p>
+  </blockquote>
+
+<pre><code>[
+  {
+    "name": "生产环境",
+    "shortLabel": "PROD",
+    "rules": [{ "type": "host-exact", "value": "app.example.com" }],
+    "text": "生产环境 - 请谨慎操作",
+    "color": "#ef4444",
+    "opacity": 0.15,
+    "border": { "enabled": true, "color": "#ef4444", "width": 4 }
+  },
+  {
+    "name": "准生产",
+    "shortLabel": "SIM",
+    "rules": [{ "type": "host-exact", "value": "staging.app.example.com" }],
+    "text": "准生产环境",
+    "color": "#f59e0b",
+    "opacity": 0.15
+  },
+  {
+    "name": "测试环境",
+    "shortLabel": "TEST",
+    "rules": [{ "type": "host-exact", "value": "test.app.example.com" }],
+    "text": "测试环境",
+    "color": "#10b981",
+    "opacity": 0.15
+  }
+]</code></pre>
+
+  <p class="why"><strong>Why:</strong> Each hostname is distinct, so <code>host-exact</code> is the most precise rule. Production gets red + inset border (highest alarm). Pre-production amber. Test green.</p>
+</section>
+
+<section>
+  <h2>2. VPN internal admin over IP</h2>
+
+  <blockquote>
+    <p>Our admin panel is only accessible over the office VPN at <code>https://192.0.2.5/</code>. There's no domain, just the IP. I want a purple watermark saying "Admin — Restricted".</p>
+  </blockquote>
+
+<pre><code>[
+  {
+    "name": "管理后台",
+    "shortLabel": "ADMIN",
+    "rules": [{ "type": "ip-exact", "value": "192.0.2.5" }],
+    "text": "Admin — Restricted\n仅授权人员访问",
+    "color": "#8b5cf6",
+    "opacity": 0.18,
+    "border": { "enabled": true, "color": "#8b5cf6", "width": 3 }
+  }
+]</code></pre>
+
+  <p class="why"><strong>Why:</strong> Browser hostname is literally <code>192.0.2.5</code>, so <code>ip-exact</code> is the right rule. Border ON to reinforce the "restricted" feel.</p>
+</section>
+
+<section>
+  <h2>3. An entire internal subnet</h2>
+
+  <blockquote>
+    <p>Everything on our internal network <code>10.0.0.0/8</code> should get a "INTERNAL" watermark. External sites should not.</p>
+  </blockquote>
+
+<pre><code>[
+  {
+    "name": "内部网络",
+    "shortLabel": "INT",
+    "rules": [{ "type": "ip-cidr", "value": "10.0.0.0/8" }],
+    "text": "INTERNAL NETWORK",
+    "color": "#6366f1",
+    "opacity": 0.12,
+    "rotation": -25
+  }
+]</code></pre>
+
+  <p class="why"><strong>Why:</strong> <code>10.0.0.0/8</code> is a Class A private subnet — 16 million addresses. Only matches when the user is accessing a page whose hostname is a raw IPv4 in that range (typical for internal-only tools).</p>
+</section>
+
+<section>
+  <h2>4. Path-based admin routing on production</h2>
+
+  <blockquote>
+    <p>On our production site <code>app.example.com</code>, the entire main app is normal but I want a big red DANGER watermark on any URL starting with <code>/admin</code>. Regular pages should have no watermark.</p>
+  </blockquote>
+
+<pre><code>[
+  {
+    "name": "生产管理页",
+    "shortLabel": "ADM",
+    "rules": [
+      { "type": "url-regex", "value": "^https://app\\.example\\.com/admin(/.*)?$" }
+    ],
+    "text": "DANGER — 生产管理页面\n此页可修改线上数据",
+    "color": "#dc2626",
+    "opacity": 0.2,
+    "fontSize": 28,
+    "border": { "enabled": true, "color": "#dc2626", "width": 5 }
+  }
+]</code></pre>
+
+  <p class="why"><strong>Why:</strong> The user wants <strong>path-based</strong> matching, not host-based. <code>url-regex</code> is the only rule type that inspects the full URL. Backslashes in JSON escape the <code>.</code> in the regex.</p>
+</section>
+
+<section>
+  <h2>5. Cookie-driven canary environment</h2>
+
+  <blockquote>
+    <p>We have a canary deployment where the URL is the same as production (<code>app.example.com</code>) but the backend routes based on a cookie <code>deploy=canary</code>. When I'm on the canary, I want an orange "CANARY" watermark.</p>
+  </blockquote>
+
+<pre><code>[
+  {
+    "name": "灰度环境",
+    "shortLabel": "CNRY",
+    "rules": [{ "type": "cookie", "value": "deploy=canary" }],
+    "text": "CANARY 灰度环境",
+    "color": "#f97316",
+    "opacity": 0.15
+  }
+]</code></pre>
+
+  <p class="why"><strong>Why:</strong> Same URL, same host — the only distinguisher is the cookie. <code>cookie: deploy=canary</code> matches exact value. If the value could vary (e.g. <code>canary-v1</code>, <code>canary-v2</code>), use <code>deploy~=canary</code> (contains) instead.</p>
+</section>
+
+<footer>
+  <a href="https://github.com/jinnersun/web-watermark-prompt">GitHub</a>
+  <a href="./privacy-policy.html">Privacy</a>
+  <a href="https://github.com/jinnersun/web-watermark-prompt/issues">Feedback</a>
+  <a href="./examples.zh.html">中文</a>
+  <p>&copy; 2026 jinnersun &middot; MIT Licensed</p>
+</footer>
+
+</div>
+</body>
+</html>
