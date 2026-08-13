@@ -1,37 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hans">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Rule Examples — Web Watermark Tool</title>
-<meta name="description" content="Five worked rule examples for marking environments: same-domain prod and test, a VPN admin panel on a raw IP, a whole internal subnet, path-based admin routing, and a cookie-driven canary." />
-<link rel="canonical" href="https://jinnersun.github.io/web-watermark-prompt/examples" />
+<title>规则示例 — 网页水印工具</title>
+<meta name="description" content="五个完整的环境标识规则示例：同域名的生产与测试、裸 IP 上的 VPN 管理后台、整个内网网段、按路径区分的管理页，以及靠 Cookie 区分的灰度环境。" />
+<link rel="canonical" href="https://jinnersun.github.io/web-watermark-prompt/zh/examples" />
 <link rel="alternate" hreflang="en" href="https://jinnersun.github.io/web-watermark-prompt/examples" />
 <link rel="alternate" hreflang="zh-Hans" href="https://jinnersun.github.io/web-watermark-prompt/zh/examples" />
 <link rel="alternate" hreflang="x-default" href="https://jinnersun.github.io/web-watermark-prompt/examples" />
-<link rel="icon" type="image/png" href="./assets/icon-128.png" />
+<link rel="icon" type="image/png" href="../assets/icon-128.png" />
 
-<link rel="preload" as="font" type="font/woff2" href="./assets/fonts/inter-latin-400.woff2" crossorigin />
+<link rel="preload" as="font" type="font/woff2" href="../assets/fonts/inter-latin-400.woff2" crossorigin />
 
 <style>
   @font-face {
     font-family: 'Inter'; font-style: normal; font-weight: 400; font-display: swap;
-    src: url('./assets/fonts/inter-latin-400.woff2') format('woff2');
+    src: url('../assets/fonts/inter-latin-400.woff2') format('woff2');
     unicode-range: U+0000-00FF, U+2000-206F, U+2190-21BB;
   }
   @font-face {
     font-family: 'Inter'; font-style: normal; font-weight: 600; font-display: swap;
-    src: url('./assets/fonts/inter-latin-600.woff2') format('woff2');
+    src: url('../assets/fonts/inter-latin-600.woff2') format('woff2');
     unicode-range: U+0000-00FF, U+2000-206F, U+2190-21BB;
   }
   @font-face {
     font-family: 'Inter'; font-style: normal; font-weight: 700; font-display: swap;
-    src: url('./assets/fonts/inter-latin-700.woff2') format('woff2');
+    src: url('../assets/fonts/inter-latin-700.woff2') format('woff2');
     unicode-range: U+0000-00FF, U+2000-206F, U+2190-21BB;
   }
   @font-face {
     font-family: 'JetBrains Mono'; font-style: normal; font-weight: 400; font-display: swap;
-    src: url('./assets/fonts/jetbrains-mono-latin-400.woff2') format('woff2');
+    src: url('../assets/fonts/jetbrains-mono-latin-400.woff2') format('woff2');
     unicode-range: U+0000-00FF, U+2000-206F, U+2190-21BB;
   }
 
@@ -210,51 +210,51 @@
 <div class="wrap">
 
 <nav class="topbar">
-  <a href="./examples" class="active">English</a>
-  <a href="./zh/examples">中文</a>
+  <a href="../examples">English</a>
+  <a href="./examples" class="active">中文</a>
 </nav>
 
 <header class="doc-head">
-  <p class="eyebrow">§ rule examples</p>
-  <h1>Five configurations, and why each rule type was chosen</h1>
-  <p class="sub">Each example starts from a plain description of a real setup, then shows the JSON it maps to and the reasoning behind the rule type. Copy any of them into the extension and edit from there.</p>
-  <a class="back" href="./">← Back to the overview</a>
+  <p class="eyebrow">§ 规则示例</p>
+  <h1>五份配置，以及每种规则类型的选用理由</h1>
+  <p class="sub">每个示例都从一段对真实环境的自然描述开始，给出它对应的 JSON，再说明为什么选这种规则类型。你可以把任意一份直接粘进扩展，再按需修改。</p>
+  <a class="back" href="./">← 返回首页</a>
 </header>
 
 <section>
-  <h2>How overlapping rules are resolved</h2>
-  <p class="answer">A configuration fires when any of its rules match. When rules from several configurations match the same page, the highest-scoring rule wins. Within one type, a longer and more specific value scores higher, so an exact host always beats a broad suffix and you can safely keep a company-wide default alongside per-host overrides.</p>
+  <h2>多条规则同时命中时怎么裁决</h2>
+  <p class="answer">一份配置里任意一条规则命中即生效。当多份配置的规则同时命中同一个页面时，分值最高的那条胜出。同类型规则之间，更长更具体的值分数更高 —— 所以精确域名永远压过宽泛的后缀匹配，你可以放心地让一条全公司默认规则和若干单域名覆盖规则共存。</p>
   <table class="rule-table">
     <thead>
-      <tr><th>Type</th><th>Matches</th><th>Example</th><th>Score</th></tr>
+      <tr><th>类型</th><th>匹配方式</th><th>示例</th><th>分值</th></tr>
     </thead>
     <tbody>
-      <tr><td><code>host-exact</code></td><td>Hostname equals the value exactly</td><td><code>app.example.com</code></td><td class="score">1000 + len</td></tr>
-      <tr><td><code>ip-exact</code></td><td>Hostname is exactly this IP</td><td><code>192.0.2.5</code></td><td class="score">900</td></tr>
-      <tr><td><code>ip-cidr</code></td><td>Hostname is an IPv4 in this subnet</td><td><code>10.0.0.0/8</code></td><td class="score">800</td></tr>
-      <tr><td><code>url-regex</code></td><td>Full URL against a regular expression</td><td><code>^https?://.*/admin(/.*)?$</code></td><td class="score">700 + len</td></tr>
-      <tr><td><code>cookie</code></td><td>Cookie name, exact value, or contains</td><td><code>deploy=canary</code></td><td class="score">650 / 600 / 550 + len</td></tr>
-      <tr><td><code>host-suffix</code></td><td>Hostname and all its subdomains</td><td><code>example.com</code></td><td class="score">500 + len</td></tr>
+      <tr><td><code>host-exact</code></td><td>域名与该值完全相同</td><td><code>app.example.com</code></td><td class="score">1000 + 长度</td></tr>
+      <tr><td><code>ip-exact</code></td><td>域名恰好是这个 IP</td><td><code>192.0.2.5</code></td><td class="score">900</td></tr>
+      <tr><td><code>ip-cidr</code></td><td>域名是该网段内的 IPv4</td><td><code>10.0.0.0/8</code></td><td class="score">800</td></tr>
+      <tr><td><code>url-regex</code></td><td>完整 URL 匹配正则表达式</td><td><code>^https?://.*/admin(/.*)?$</code></td><td class="score">700 + 长度</td></tr>
+      <tr><td><code>cookie</code></td><td>Cookie 名、精确值或包含</td><td><code>deploy=canary</code></td><td class="score">650 / 600 / 550 + 长度</td></tr>
+      <tr><td><code>host-suffix</code></td><td>该域名及其所有子域名</td><td><code>example.com</code></td><td class="score">500 + 长度</td></tr>
     </tbody>
   </table>
-  <p class="answer" style="margin-top:20px">The three cookie scores correspond to the three cookie forms: <code>name=value</code> for an exact value, <code>name~=fragment</code> for a substring, and a bare <code>name</code> for presence alone. Each adds the length of the cookie name.</p>
+  <p class="answer" style="margin-top:20px">Cookie 的三档分值对应三种写法：<code>name=value</code> 精确匹配值，<code>name~=fragment</code> 匹配包含关系，只写 <code>name</code> 则只判断是否存在。三者都会再加上 Cookie 名的长度。</p>
 </section>
 
 <section>
-  <h2>The five examples</h2>
+  <h2>五个示例</h2>
 
   <div class="ex">
     <div class="n">01</div>
     <div class="body">
-      <h2>Same-domain multi-environment</h2>
+      <h2>同域名多环境</h2>
       <blockquote>
-        <p>I have three environments sharing the same base domain:</p>
+        <p>我有三套环境共用同一个根域名：</p>
         <ul>
-        <li><code>https://app.example.com/</code> is production</li>
-        <li><code>https://test.app.example.com/</code> is test</li>
-        <li><code>https://staging.app.example.com/</code> is pre-production</li>
+        <li><code>https://app.example.com/</code> 是生产</li>
+        <li><code>https://test.app.example.com/</code> 是测试</li>
+        <li><code>https://staging.app.example.com/</code> 是预生产</li>
         </ul>
-        <p>I need distinct watermarks so I don't accidentally operate on the wrong one.</p>
+        <p>我需要三种不同的水印，避免在错误的环境上误操作。</p>
       </blockquote>
 <pre><code>[
   {
@@ -283,60 +283,60 @@
     "opacity": 0.15
   }
 ]</code></pre>
-      <p class="why"><strong>Why:</strong> Each hostname is distinct, so <code>host-exact</code> is the most precise rule. Production gets red plus an inset border, the loudest combination. Pre-production is amber, test is green.</p>
+      <p class="why"><strong>选用理由：</strong>三个域名各不相同，所以 <code>host-exact</code> 是最精确的规则。生产用红色再加内嵌边框，这是最强的组合；预生产用琥珀色，测试用绿色。</p>
     </div>
   </div>
 
   <div class="ex">
     <div class="n">02</div>
     <div class="body">
-      <h2>VPN internal admin over IP</h2>
+      <h2>VPN 内网管理后台（裸 IP）</h2>
       <blockquote>
-        <p>Our admin panel is only accessible over the office VPN at <code>https://192.0.2.5/</code>. There is no domain, just the IP. I want a purple watermark saying "Admin — Restricted".</p>
+        <p>我们的管理后台只能通过公司 VPN 访问 <code>https://192.0.2.5/</code>，没有域名，只有 IP。我想要一个紫色水印，写着「Admin — 受限区域」。</p>
       </blockquote>
 <pre><code>[
   {
     "name": "管理后台",
     "shortLabel": "ADMIN",
     "rules": [{ "type": "ip-exact", "value": "192.0.2.5" }],
-    "text": "Admin — Restricted\n仅授权人员访问",
+    "text": "Admin — 受限区域\n仅授权人员访问",
     "color": "#8b5cf6",
     "opacity": 0.18,
     "border": { "enabled": true, "color": "#8b5cf6", "width": 3 }
   }
 ]</code></pre>
-      <p class="why"><strong>Why:</strong> The browser hostname is literally <code>192.0.2.5</code>, so <code>ip-exact</code> is the right rule — no domain rule could ever match here. The border is on to reinforce the restricted feel.</p>
+      <p class="why"><strong>选用理由：</strong>浏览器里的 hostname 就是 <code>192.0.2.5</code> 本身，所以只能用 <code>ip-exact</code> —— 任何域名类规则在这里都不可能命中。边框打开，强化「受限」的感觉。</p>
     </div>
   </div>
 
   <div class="ex">
     <div class="n">03</div>
     <div class="body">
-      <h2>An entire internal subnet</h2>
+      <h2>整个内网网段</h2>
       <blockquote>
-        <p>Everything on our internal network <code>10.0.0.0/8</code> should get an "INTERNAL" watermark. External sites should not.</p>
+        <p>内网 <code>10.0.0.0/8</code> 上的所有页面都应该带「INTERNAL」水印，外部网站不要。</p>
       </blockquote>
 <pre><code>[
   {
     "name": "内部网络",
     "shortLabel": "INT",
     "rules": [{ "type": "ip-cidr", "value": "10.0.0.0/8" }],
-    "text": "INTERNAL NETWORK",
+    "text": "INTERNAL NETWORK\n内部网络",
     "color": "#6366f1",
     "opacity": 0.12,
     "rotation": -25
   }
 ]</code></pre>
-      <p class="why"><strong>Why:</strong> <code>10.0.0.0/8</code> is a Class A private subnet, about 16 million addresses, covered by one rule. It matches only when the hostname is a raw IPv4 in that range, which is the normal case for internal-only tools.</p>
+      <p class="why"><strong>选用理由：</strong><code>10.0.0.0/8</code> 是 A 类私有网段，约 1600 万个地址，一条规则全覆盖。它只在 hostname 是该范围内的裸 IPv4 时命中，而这正是纯内网工具的常态。</p>
     </div>
   </div>
 
   <div class="ex">
     <div class="n">04</div>
     <div class="body">
-      <h2>Path-based admin routing on production</h2>
+      <h2>生产环境里按路径区分的管理页</h2>
       <blockquote>
-        <p>On our production site <code>app.example.com</code> the main app is fine, but I want a big red DANGER watermark on any URL starting with <code>/admin</code>. Regular pages should have no watermark.</p>
+        <p>生产站点 <code>app.example.com</code> 的主应用不用管，但我希望所有以 <code>/admin</code> 开头的 URL 都盖上大号红色 DANGER 水印，普通页面不要水印。</p>
       </blockquote>
 <pre><code>[
   {
@@ -352,16 +352,16 @@
     "border": { "enabled": true, "color": "#dc2626", "width": 5 }
   }
 ]</code></pre>
-      <p class="why"><strong>Why:</strong> This is <strong>path-based</strong>, not host-based, and <code>url-regex</code> is the only type that inspects the full URL. The doubled backslashes are JSON escaping for the literal dots; the <code>$</code> is the regex end anchor.</p>
+      <p class="why"><strong>选用理由：</strong>这是按<strong>路径</strong>而非按域名区分，而 <code>url-regex</code> 是唯一会检查完整 URL 的类型。双反斜杠是 JSON 转义，用来表示正则里的字面点号；<code>$</code> 是正则的结尾锚点。</p>
     </div>
   </div>
 
   <div class="ex">
     <div class="n">05</div>
     <div class="body">
-      <h2>Cookie-driven canary environment</h2>
+      <h2>靠 Cookie 区分的灰度环境</h2>
       <blockquote>
-        <p>We have a canary deployment where the URL is the same as production (<code>app.example.com</code>) but the backend routes on a cookie <code>deploy=canary</code>. When I am on the canary I want an orange "CANARY" watermark.</p>
+        <p>我们有一套灰度发布，URL 和生产完全一样（<code>app.example.com</code>），后端靠 <code>deploy=canary</code> 这个 Cookie 做路由。当我落在灰度上时，想要一个橙色的「CANARY」水印。</p>
       </blockquote>
 <pre><code>[
   {
@@ -373,32 +373,32 @@
     "opacity": 0.15
   }
 ]</code></pre>
-      <p class="why"><strong>Why:</strong> Same URL, same host — the cookie is the only distinguisher, so no host or URL rule can help. <code>deploy=canary</code> matches the exact value; if the value varies, such as <code>canary-v1</code> and <code>canary-v2</code>, use <code>deploy~=canary</code> to match on the substring instead.</p>
+      <p class="why"><strong>选用理由：</strong>同一个 URL、同一个域名，唯一的区分点就是 Cookie，任何域名或 URL 规则都帮不上。<code>deploy=canary</code> 匹配精确值；如果这个值会变，比如 <code>canary-v1</code>、<code>canary-v2</code>，改用 <code>deploy~=canary</code> 按包含关系匹配。</p>
     </div>
   </div>
 </section>
 
 <section>
-  <h2>Check a rule before you save it</h2>
-  <p class="answer">The options page has a rule tester. Paste a URL, optionally paste a cookie string, and it reports which configuration would match and which rule did it. That turns every example above into something you can verify in seconds instead of trusting.</p>
+  <h2>保存前先验一遍规则</h2>
+  <p class="answer">设置页里有一个规则测试器。粘贴一个 URL，需要时再粘贴一段 Cookie 字符串，它会告诉你哪份配置会命中、以及是哪条规则命中的。这让上面每个示例都从「相信它能行」变成几秒钟就能验证。</p>
   <div class="tester">
     <dl>
-      <dt>URL field</dt>
-      <dd>The full address you expect to be marked, for example <code>https://test.app.example.com/orders</code>. Host, IP, CIDR and regex rules are all evaluated against it.</dd>
-      <dt>Cookie field</dt>
-      <dd>Optional, and written the way the browser writes it: <code>deploy=canary; sid=abc</code>. Cookie rules need this to resolve, because the extension reads cookies from the page rather than through a permission.</dd>
-      <dt>Unsafe pattern guard</dt>
-      <dd>Regexes that are excessively long or structurally catastrophic are refused rather than run, so a bad pattern cannot freeze the pages you visit.</dd>
+      <dt>URL 输入框</dt>
+      <dd>填你期望被标记的完整地址，例如 <code>https://test.app.example.com/orders</code>。域名、IP、网段和正则类规则都会拿它来求值。</dd>
+      <dt>Cookie 输入框</dt>
+      <dd>选填，按浏览器自己的写法填：<code>deploy=canary; sid=abc</code>。Cookie 规则必须靠它才能判定 —— 因为扩展是从页面里读 Cookie 的，而不是通过权限拿的。</dd>
+      <dt>危险正则拦截</dt>
+      <dd>过长或结构上会引发灾难性回溯的正则会被直接拒绝，不予执行，这样一个写坏的表达式不会把你访问的页面卡死。</dd>
     </dl>
   </div>
 </section>
 
 <footer>
   <a href="https://github.com/jinnersun/web-watermark-prompt">GitHub</a>
-  <a href="./">Overview</a>
-  <a href="./privacy-policy.html">Privacy</a>
-  <a href="https://github.com/jinnersun/web-watermark-prompt/issues">Feedback</a>
-  <a href="./zh/examples">中文</a>
+  <a href="./">首页</a>
+  <a href="../privacy-policy.html">隐私</a>
+  <a href="https://github.com/jinnersun/web-watermark-prompt/issues">反馈</a>
+  <a href="../examples">English</a>
   <p>&copy; 2026 jinnersun &middot; MIT Licensed</p>
 </footer>
 
