@@ -74,7 +74,6 @@
       --test: #4ade80;
       --code-bg: #1e293b;
     }
-    nav.topbar a.active { color: #0f172a; }
   }
   * { box-sizing: border-box; }
   body {
@@ -87,14 +86,33 @@
   .wrap { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
 
   nav.topbar {
-    display: flex; gap: 8px; padding: 20px 0 0; justify-content: flex-end;
+    position: sticky; top: 0; z-index: 50;
+    display: flex; align-items: center; gap: 24px;
+    padding: 14px 28px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
   }
-  nav.topbar a {
-    font: 600 13px/1 var(--mono); letter-spacing: .04em;
-    color: var(--muted); text-decoration: none;
-    padding: 7px 11px; border-radius: 6px; border: 1px solid var(--border);
+  nav.topbar .brand {
+    display: flex; align-items: center; gap: 8px;
+    font: 700 16px/1 var(--sans); color: var(--text); text-decoration: none;
   }
-  nav.topbar a.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+  nav.topbar .brand .mark {
+    width: 26px; height: 26px; border-radius: 7px;
+    background: var(--primary); color: #fff;
+    display: inline-flex; align-items: center; justify-content: center;
+    font: 700 13px/1 var(--mono);
+  }
+  nav.topbar .links { display: flex; gap: 18px; }
+  nav.topbar a { font: 500 14px/1 var(--sans); color: var(--text-2); text-decoration: none; }
+  nav.topbar a:hover { color: var(--primary); }
+  nav.topbar a.active { color: var(--primary); }
+  nav.topbar .side { margin-left: auto; display: flex; gap: 16px; align-items: center; }
+  section.feedback { scroll-margin-top: 72px; }
+  @media (max-width: 720px) {
+    nav.topbar { flex-wrap: wrap; gap: 10px; padding: 12px 16px; }
+    nav.topbar .links { order: 3; width: 100%; justify-content: space-between; }
+    nav.topbar .side { margin-left: 0; }
+  }
 
   .eyebrow {
     font: 600 12px/1 var(--mono); letter-spacing: .11em; text-transform: uppercase;
@@ -360,12 +378,23 @@
 </style>
 </head>
 <body>
-<div class="wrap">
-
 <nav class="topbar">
-  <a href="./" class="active">English</a>
-  <a href="./zh/">中文</a>
+  <a class="brand" href="./">
+    <span class="mark">W</span><span>Web Watermark</span>
+  </a>
+  <div class="links">
+    <a href="./" class="active">Home</a>
+    <a href="./examples">Examples</a>
+    <a href="./privacy-policy.html">Privacy</a>
+    <a href="#feedback">Feedback</a>
+  </div>
+  <div class="side">
+    <a href="https://github.com/jinnersun/watermask">GitHub</a>
+    <a href="./zh/">中文</a>
+  </div>
 </nav>
+
+<div class="wrap">
 
 <header class="hero">
   <p class="eyebrow">§ environment indicator for chrome</p>
@@ -373,7 +402,7 @@
   <p class="sub">Web Watermark Tool marks matching pages with a tiled indicator, a viewport border, and a toolbar badge — so production never gets mistaken for test. Rules match on domain, URL, IP range, or cookie.</p>
   <div class="cta-row">
     <button class="btn btn-primary" disabled aria-disabled="true">Coming to Chrome Web Store</button>
-    <a class="btn btn-secondary" href="https://github.com/jinnersun/web-watermark-prompt">Get early access on GitHub</a>
+    <a class="btn btn-secondary" href="https://github.com/jinnersun/watermask">Get early access on GitHub</a>
   </div>
   <p class="trust">Free · No account · 1 permission · No tracking</p>
 </header>
@@ -705,7 +734,7 @@
   <p class="shot-note">Screenshot — smart contrast holding up across three backgrounds.</p>
 </section>
 
-<section class="feedback">
+<section class="feedback" id="feedback">
   <h2>Report a problem</h2>
   <p class="answer">Found a bug or want a feature? The form below lands straight in the author's inbox, or open an issue on GitHub — both work.</p>
   <div class="feedback-grid">
@@ -717,16 +746,16 @@
     </form>
     <div class="fb-alt">
       <p>Prefer GitHub?</p>
-      <a href="https://github.com/jinnersun/web-watermark-prompt/issues">Open an issue</a>
+      <a href="https://github.com/jinnersun/watermask/issues">Open an issue</a>
     </div>
   </div>
 </section>
 
 <footer>
-  <a href="https://github.com/jinnersun/web-watermark-prompt">GitHub</a>
+  <a href="https://github.com/jinnersun/watermask">GitHub</a>
   <a href="./examples">Examples</a>
   <a href="./privacy-policy.html">Privacy</a>
-  <a href="https://github.com/jinnersun/web-watermark-prompt/issues">Feedback</a>
+  <a href="https://github.com/jinnersun/watermask/issues">Feedback</a>
   <a href="./zh/">中文</a>
   <p>&copy; 2026 jinnersun &middot; MIT Licensed</p>
 </footer>
