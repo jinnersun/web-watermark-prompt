@@ -153,7 +153,7 @@ v1 已上线并通过 30/30 项审计，但存在三类问题：
 已验证子集包含站点用到的全部 ASCII 与 `→ § © ·` 等符号（287 / 245 字形），且**不含任何 CJK 码位**，使 `unicode-range` 声明诚实。
 
 字体来源（均为 GitHub Releases，已实测可下载）：
-- Inter v4.1 — `https://github.com/rsms/inter/releases/download/v4.1/Inter-4.1.zip`（取 `extras/ttf-hinted/`）
+- Inter v4.1 — `https://github.com/rsms/inter/releases/download/v4.1/Inter-4.1.zip`（取 `extras/ttf/`；该版本不提供独立 hinted 目录）
 - JetBrains Mono v2.304 — `https://github.com/JetBrains/JetBrainsMono/releases/download/v2.304/JetBrainsMono-2.304.zip`（取 `fonts/ttf/`）
 
 ### 3.3 Token

@@ -84,7 +84,7 @@ for zf, mapping in SRC.items():
     with zipfile.ZipFile(os.path.join(TMP, zf)) as z:
         for base, out_name in mapping.items():
             cand = [n for n in z.namelist()
-                    if n.endswith('/' + base) and 'ttf' in n and 'Variable' not in n]
+                    if n.endswith('/' + base) and 'Variable' not in n]
             assert cand, 'not found: ' + base
             with z.open(cand[0]) as fs, open(os.path.join(WORK, base), 'wb') as fd:
                 shutil.copyfileobj(fs, fd)
