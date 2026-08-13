@@ -54,12 +54,11 @@
       --primary: #818cf8;
       --code-bg: #1e293b;
     }
-    nav.topbar a.active { color: #0f172a; }
   }
   * { box-sizing: border-box; }
   body {
     margin: 0;
-    padding: 40px 20px;
+    padding: 0 0 40px;
     font-family: var(--sans);
     background: var(--bg);
     color: var(--text);
@@ -68,7 +67,7 @@
   }
   .container {
     max-width: 760px;
-    margin: 0 auto;
+    margin: 40px auto 0;
     background: var(--panel);
     border: 1px solid var(--border);
     border-radius: 12px;
@@ -87,25 +86,6 @@
   .meta {
     color: var(--muted);
     font-size: 14px;
-  }
-  .lang-switch {
-    display: inline-flex;
-    gap: 8px;
-    margin-top: 8px;
-  }
-  .lang-switch a {
-    padding: 4px 10px;
-    border-radius: 999px;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    text-decoration: none;
-    font-size: 13px;
-    cursor: pointer;
-  }
-  .lang-switch a.active {
-    background: var(--primary);
-    color: #fff;
-    border-color: var(--primary);
   }
   h2 {
     font-size: 20px;
@@ -132,15 +112,38 @@
   .lang-block { display: none; }
   .lang-block.active { display: block; }
   nav.topbar {
-    display: flex; gap: 8px; justify-content: flex-end; margin: 0 0 24px;
+    position: sticky; top: 0; z-index: 50;
+    display: flex; align-items: center; gap: 24px;
+    padding: 14px 28px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
   }
-  nav.topbar a {
-    font: 600 13px/1 var(--mono); letter-spacing: .04em;
-    color: var(--muted); text-decoration: none;
-    padding: 7px 11px; border-radius: 6px; border: 1px solid var(--border);
+  nav.topbar .brand {
+    display: flex; align-items: center; gap: 8px;
+    font: 700 16px/1 var(--sans); color: var(--text); text-decoration: none;
   }
-  nav.topbar a:hover { color: var(--primary); border-color: var(--primary); }
-  nav.topbar a.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+  nav.topbar .brand .mark {
+    width: 26px; height: 26px; border-radius: 7px;
+    background: var(--primary); color: #fff;
+    display: inline-flex; align-items: center; justify-content: center;
+    font: 700 13px/1 var(--mono);
+  }
+  nav.topbar .links { display: flex; gap: 18px; }
+  nav.topbar a { font: 500 14px/1 var(--sans); color: var(--muted); text-decoration: none; }
+  nav.topbar a:hover { color: var(--primary); }
+  nav.topbar a.active { color: var(--primary); }
+  nav.topbar .side { margin-left: auto; display: flex; gap: 16px; align-items: center; }
+  nav.topbar .side .lang-switch { display: flex; gap: 4px; }
+  nav.topbar .side .lang-switch a {
+    font: 500 14px/1 var(--sans); color: var(--muted);
+    border: none; padding: 0; background: none; border-radius: 0;
+  }
+  nav.topbar .side .lang-switch a.active { color: var(--primary); }
+  @media (max-width: 720px) {
+    nav.topbar { flex-wrap: wrap; gap: 10px; padding: 12px 16px; }
+    nav.topbar .links { order: 3; width: 100%; justify-content: space-between; }
+    nav.topbar .side { margin-left: 0; }
+  }
 
   footer {
     margin-top: 40px;
@@ -153,22 +156,32 @@
 </style>
 </head>
 <body>
-<div class="container">
-
 <nav class="topbar">
-  <a href="./">首页 / Overview</a>
-  <a href="./examples">示例 / Examples</a>
+  <a class="brand" href="./">
+    <span class="mark">W</span><span>Web Watermark</span>
+  </a>
+  <div class="links">
+    <a href="./">首页 / Home</a>
+    <a href="./examples">示例 / Examples</a>
+    <a href="./privacy-policy.html" class="active">隐私政策 / Privacy</a>
+    <a href="https://github.com/jinnersun/watermask/issues">反馈 / Feedback</a>
+  </div>
+  <div class="side">
+    <a href="https://github.com/jinnersun/watermask">GitHub</a>
+    <span class="lang-switch">
+      <a data-lang="zh" class="active" onclick="switchLang('zh')">中文</a>
+      <a data-lang="en" onclick="switchLang('en')">English</a>
+    </span>
+  </div>
 </nav>
+
+<div class="container">
 
 <header>
   <h1 id="pageTitle">隐私政策 · Privacy Policy</h1>
   <div class="meta">
     <div><span data-i18n="ext">Web Watermark Tool · 网页水印工具</span></div>
     <div><span data-i18n="lastUpdated">Last updated</span>: 2026-07-14</div>
-    <div class="lang-switch">
-      <a data-lang="zh" class="active" onclick="switchLang('zh')">中文</a>
-      <a data-lang="en" onclick="switchLang('en')">English</a>
-    </div>
   </div>
 </header>
 
@@ -209,7 +222,7 @@
 
 <h2>8. 联系方式</h2>
 <p>Bug 反馈 / 隐私相关问题，请到 GitHub Issues 反馈：<br />
-<a href="https://github.com/jinnersun/web-watermark-prompt/issues" target="_blank" rel="noopener">https://github.com/jinnersun/web-watermark-prompt/issues</a></p>
+<a href="https://github.com/jinnersun/watermask/issues" target="_blank" rel="noopener">https://github.com/jinnersun/watermask/issues</a></p>
 
 </section>
 
@@ -250,7 +263,7 @@
 
 <h2>8. Contact</h2>
 <p>Report bugs or ask privacy-related questions via GitHub Issues:<br />
-<a href="https://github.com/jinnersun/web-watermark-prompt/issues" target="_blank" rel="noopener">https://github.com/jinnersun/web-watermark-prompt/issues</a></p>
+<a href="https://github.com/jinnersun/watermask/issues" target="_blank" rel="noopener">https://github.com/jinnersun/watermask/issues</a></p>
 
 </section>
 
