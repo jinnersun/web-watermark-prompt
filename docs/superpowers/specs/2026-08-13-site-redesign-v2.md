@@ -133,10 +133,28 @@ v1 已上线并通过 30/30 项审计，但存在三类问题：
 硬性要求：
 
 1. **必须限定 `unicode-range`** — Inter 不含 CJK 字形。不加限制，中文页会下载整套拉丁字体却一个字用不上；加了之后中文页几乎不产生字体请求，CJK 自动落到 PingFang SC / 微软雅黑。
-2. **字重只取 400 / 600 / 700** — 设计中出现的 650 / 680 必须归拢到这三档。
+2. **字重只取 Inter 400 / 600 / 700 + JetBrains Mono 400** — 设计中出现的 650 / 680 必须归拢。mono 仅用于 eyebrow、标签、代码，不需要粗体，故只取一档。
 3. 使用 `swap`，**不用 `optional`**（否则慢网络永远看不到 Inter）。
 4. 首屏字体加 `<link rel="preload" as="font" type="font/woff2" crossorigin>`。
 5. 仓库内附 `assets/fonts/OFL.txt` — Inter 与 JetBrains Mono 均为 SIL OFL，可自由分发。
+
+**实测子集体积**（已用 fontTools 4.60.1 + brotli 1.2.0 在本机验证，非估算）：
+
+| 文件 | 体积 | 源文件 |
+|---|---|---|
+| `inter-latin-400.woff2` | 20.2 KB | 401 KB |
+| `inter-latin-600.woff2` | 20.6 KB | 409 KB |
+| `inter-latin-700.woff2` | 20.6 KB | 410 KB |
+| `jetbrains-mono-latin-400.woff2` | 14.6 KB | 267 KB |
+| **合计** | **76.1 KB** | |
+
+子集参数：`--unicodes=U+0000-00FF,U+2000-206F,U+2190-21BB --layout-features=kern,liga --flavor=woff2`。
+**保留 hinting**：实测去掉 hinting 可降到 35.8 KB，但会损害 Windows 小字号渲染质量，不采用。
+已验证子集包含站点用到的全部 ASCII 与 `→ § © ·` 等符号（287 / 245 字形），且**不含任何 CJK 码位**，使 `unicode-range` 声明诚实。
+
+字体来源（均为 GitHub Releases，已实测可下载）：
+- Inter v4.1 — `https://github.com/rsms/inter/releases/download/v4.1/Inter-4.1.zip`（取 `extras/ttf-hinted/`）
+- JetBrains Mono v2.304 — `https://github.com/JetBrains/JetBrainsMono/releases/download/v2.304/JetBrainsMono-2.304.zip`（取 `fonts/ttf/`）
 
 ### 3.3 Token
 
@@ -185,34 +203,24 @@ v1 已上线并通过 30/30 项审计，但存在三类问题：
 - 水印强度条：不透明度 55% + 字号 25% + 密度倒数 20% 加权，显示「很低调 / 适中 / 明显 / 非常强烈」
 - 淡出只在窗口范围内监听，**文案须说明「打字」在演示中试不出来**（非可聚焦 div 收不到 `keydown`），避免访客以为坏了
 
-### 4.2 对比页 `/vs-environment-marker-alternatives` — 意图：比较
-
-**独特手法**：超大 mono 序号 + 一张**诚实的**能力表，包含我们不如对手的格子。
-
-| # | 分节 |
-|---|---|
-| 01 | 一句话结论（谁该选、谁不该，40–75 词） |
-| 02 | 能力对照表 |
-| 03 | 我们独有：IP/CIDR、Cookie 匹配、difference 智能对比色 |
-| 04 | 他们更强：Environment Marker 自 2015 年运营、周活 35,000、Google「精选」；我们尚未上架 |
-| 05 | 迁移说明 |
-
-> **⚠ 全案最大事实风险**
-> 竞品调研只取得了用户量、评分与大致定位，**未逐项验证它们支持哪些匹配方式**。写错对手比写错自己更糟。
-> **硬前置任务**：实施对比页之前，必须实际安装 Environment Marker、Environment Indicator、URLColors 三者并逐项实测。**验证不了的行直接删除，不得猜测。**
-
-### 4.3 示例页 `/examples` — 意图：配置
+### 4.2 示例页 `/examples` — 意图：配置
 
 **独特手法**：序号超大悬挂左槽，JSON 配置本身作视觉纹理。
 
 | # | 分节 |
 |---|---|
 | 01 | 五个示例（沿用 `EXAMPLES.md`；中英版在示例 2–3 内容本就不同，保持） |
-| 02 | 优先级说明 + 真实顺序表 |
+| 02 | 优先级说明 + 真实打分表 |
 | 03 | 规则测试器（现有页面完全未提） |
 | 04 | 导入 / 导出，团队共享配置 |
 
-三页全部双语，共 6 个文件。
+两页全部双语，共 4 个文件。
+
+### 4.3 已撤销：竞品对比页
+
+**决定（2026-08-13）**：不做对比页。理由是竞品能力无法诚实验证 —— 调研只取得用户量与评分，未逐项确认它们支持哪些匹配方式，写错对手比写错自己更糟。与其猜测，不如把力气花在讲清自己的能力上。
+
+原计划放在对比页的独有能力（IP/CIDR、Cookie 匹配、difference 智能对比色）**并入首页第 04 / 05 节**，以「我们能做什么」的正面陈述呈现，不与任何具名产品比较。
 
 ---
 
@@ -226,15 +234,13 @@ v1 已上线并通过 30/30 项审计，但存在三类问题：
 | `/zh/` | zh-Hans | `index.zh.html` |
 | `/examples` | en | `examples.html` |
 | `/zh/examples` | zh-Hans | `examples.zh.html` |
-| `/vs-environment-marker-alternatives` | en | 新增 |
-| `/zh/vs-environment-marker-alternatives` | zh-Hans | 新增 |
 | `/privacy-policy.html` | zh-Hans（JS 切换） | 保持不变 |
 
 处理要求：
 
 1. 每页 canonical 自指新 URL；hreflang 三向（en / zh-Hans / x-default）
 2. 旧 `.html` 路径保留为**含 canonical 指向新 URL 的薄页**，避免既有外链与 GSC 收录 404（GitHub Pages 无服务端 301 能力）
-3. `sitemap.xml` 重新生成，含 6 个新 URL + `privacy-policy.html`
+3. `sitemap.xml` 重新生成，含 4 个新 URL + `privacy-policy.html`
 4. README 与 README.zh_CN 的站点链接复核
 5. JSON-LD 规则不变：仅 landing 页放 `SoftwareApplication` + `Organization`，支撑页零 JSON-LD；**不加 FAQPage / HowTo**，问答靠可见 `<h3>` + `<p>` 实现
 6. `inLanguage` 保持 `["en","zh-CN","zh-TW","ja","es"]`（扩展 locale 列表，不改为 zh-Hans）
@@ -277,15 +283,14 @@ v1 已上线并通过 30/30 项审计，但存在三类问题：
 
 ## 9. 交付顺序
 
-1. 竞品实测（对比页硬前置）
-2. 字体子集与自托管落地 + OFL
-3. 首页（en → zh）
-4. 示例页（en → zh）
-5. 对比页（en → zh）
-6. 旧 URL canonical 薄页 + sitemap 重建
-7. 扩展 `options.html:8` 删除（独立提交）
-8. 全站审计（EOL / BOM / lang / canonical / 无外链泄漏）
-9. **最后**：`jinnersun.github.io` 根仓库 + `robots.txt` + 极简 `index.html`
+1. 字体子集与自托管落地 + OFL
+2. 首页（en → zh）
+3. 示例页（en → zh）
+4. 旧 URL canonical 薄页 + sitemap 重建
+5. 扩展 `options.html:8` 删除（独立提交）
+6. 全站审计（EOL / BOM / lang / canonical / 无外链泄漏）
+7. 推送部署并线上验证
+8. **另立项目**：`jinnersun.github.io` 根仓库 + `robots.txt` + 极简 `index.html`（独立仓库，不属本次改版）
 
 ## 10. 仍待人工完成
 
