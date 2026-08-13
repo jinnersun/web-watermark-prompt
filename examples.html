@@ -258,27 +258,27 @@
       </blockquote>
 <pre><code>[
   {
-    "name": "生产环境",
+    "name": "Production",
     "shortLabel": "PROD",
     "rules": [{ "type": "host-exact", "value": "app.example.com" }],
-    "text": "生产环境 - 请谨慎操作",
+    "text": "Production - handle with care",
     "color": "#ef4444",
     "opacity": 0.15,
     "border": { "enabled": true, "color": "#ef4444", "width": 4 }
   },
   {
-    "name": "准生产",
+    "name": "Staging",
     "shortLabel": "SIM",
     "rules": [{ "type": "host-exact", "value": "staging.app.example.com" }],
-    "text": "准生产环境",
+    "text": "Staging",
     "color": "#f59e0b",
     "opacity": 0.15
   },
   {
-    "name": "测试环境",
+    "name": "Test",
     "shortLabel": "TEST",
     "rules": [{ "type": "host-exact", "value": "test.app.example.com" }],
-    "text": "测试环境",
+    "text": "Test",
     "color": "#10b981",
     "opacity": 0.15
   }
@@ -296,10 +296,10 @@
       </blockquote>
 <pre><code>[
   {
-    "name": "管理后台",
+    "name": "Admin Console",
     "shortLabel": "ADMIN",
     "rules": [{ "type": "ip-exact", "value": "192.0.2.5" }],
-    "text": "Admin — Restricted\n仅授权人员访问",
+    "text": "Admin — Restricted",
     "color": "#8b5cf6",
     "opacity": 0.18,
     "border": { "enabled": true, "color": "#8b5cf6", "width": 3 }
@@ -318,7 +318,7 @@
       </blockquote>
 <pre><code>[
   {
-    "name": "内部网络",
+    "name": "Internal",
     "shortLabel": "INT",
     "rules": [{ "type": "ip-cidr", "value": "10.0.0.0/8" }],
     "text": "INTERNAL NETWORK",
@@ -340,12 +340,12 @@
       </blockquote>
 <pre><code>[
   {
-    "name": "生产管理页",
+    "name": "Production Admin",
     "shortLabel": "ADM",
     "rules": [
       { "type": "url-regex", "value": "^https://app\\.example\\.com/admin(/.*)?$" }
     ],
-    "text": "DANGER — 生产管理页面\n此页可修改线上数据",
+    "text": "DANGER — production admin page\nEditing live data",
     "color": "#dc2626",
     "opacity": 0.2,
     "fontSize": 28,
@@ -365,10 +365,10 @@
       </blockquote>
 <pre><code>[
   {
-    "name": "灰度环境",
+    "name": "Canary",
     "shortLabel": "CNRY",
     "rules": [{ "type": "cookie", "value": "deploy=canary" }],
-    "text": "CANARY 灰度环境",
+    "text": "CANARY ENVIRONMENT",
     "color": "#f97316",
     "opacity": 0.15
   }
