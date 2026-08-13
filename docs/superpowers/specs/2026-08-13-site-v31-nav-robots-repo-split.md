@@ -1,7 +1,7 @@
 # V3.1 站点导航 / robots / GitHub 链接修正 / 仓库拆分 — 设计
 
 **日期:** 2026-08-13
-**状态:** 待用户审阅
+**状态:** 已确认（watermask = 独立站点仓库；扩展水印仓库不动；站点 issues 指向 watermask）
 **关联:** 上一篇 spec 与 plan 已随 v2.1 Task 5 删除；本文档沿用"拆分后排除、最终删除，只留 git 历史"的惯例。
 
 ## 背景与问题
@@ -20,11 +20,40 @@
 | 导航内容 | 首页 / 示例 / 隐私政策 / 反馈 + 语言切换 + GitHub 链接 |
 | 导航"反馈"链接 | 锚点指向本页面反馈表单（保留 EasyForm 双路径） |
 | robots.txt 内容 | 基础版：`Allow: /` + `Sitemap:` 声明 |
-| GitHub 链接指向 | 拆分为独立站点仓库，链接改向扩展仓库 `github.com/jinnersun/water-mark` |
-| 拆分方式 | 新建独立站点仓库（不带 prompt 内容） |
-| 拆分时机 | 本地准备好后一次性迁移（导航+robots+新域名+链接修正全部就绪 → 推送新仓库 → 配置 CF） |
+| **新站点仓库** | `github.com/jinnersun/watermask`（已存在 public 200）；本地克隆到 `D:\item\chrome插件\web-watermask`（当前为空，无 git） |
+| **GitHub 链接指向** | 站点内所有 GitHub/issue 链接指向 `github.com/jinnersun/watermask` |
+| **扩展仓库** | 扩展源码仓库 remote（water-mark）**不动**；站点 issues 指向 watermask |
+| 拆分方式 | 新建独立站点仓库 watermask（不带 prompt 内容） |
+| 拆分时机 | 本地准备好后一次性迁移（导航+robots+新域名+链接修正全部就绪 → 建本地 web-watermask git → 关联 watermask remote → push → CF 改连） |
 | 旧 GH Pages | 让 `jinnersun.github.io/web-watermark-prompt/` 自然失效（canonical 已指向新域名） |
+| 旧 prompt 仓库 | `web-watermark-prompt` 删除站点的"不相关代码"（部署文件 index.html 等），只保留 prompt 内容，README 更新 |
 | sitemap 处理 | 保持内容不变，GSC 重试；仍失败则用 URL 检查工具调试 |
+
+### 拆分执行明细（修订）
+
+**新仓库内容（白名单迁移，排除 prompt）：**
+```
+.gitattributes  LICENSE  robots.txt  sitemap.xml
+index.html  zh/index.html  examples.html  zh/examples.html
+index.zh.html  examples.zh.html  privacy-policy.html
+googled3a11b0a36ad28b1.html
+assets/  (fonts + icon + og-image + screenshots)
+README.md（重写为站点仓库说明，非 prompt 版）
+```
+
+**排除：** `PROMPT.md`、`PROMPT.zh_CN.md`、`EXAMPLES.md`、`EXAMPLES.zh_CN.md`、旧 README（prompt 定位）、`docs/`（v3.1 spec/plan 留在旧仓库 git 历史即可）。
+
+**执行步骤：**
+1. 本地在 `web-watermark-prompt` 完成导航/robots/链接修正 → commit → push（短暂保持 GH Pages 旧站一致）。
+2. 在 `web-watermark`（repo 目录）`git clone` 站点仓库 → 检出到 `web-watermask` 本地文件夹（或 `git init` + `git remote add origin git@/https://github.com/jinnersun/watermask.git` + 推送当前树）。
+3. 新仓库树：删除 prompt 内容文件，仅保留白名单 + 重写 README；`git add`/`commit` → push 到 `watermask` remote。
+4. 用户操作：CF Pages 改连 `jinnersun/watermask`。
+5. 新域名线上验证。
+6. 旧 `web-watermark-prompt` 仓库：删除站点部署文件，保留 prompt 内容，更新 README（"站点已移至 watermask"）；旧 GH Pages 自然失效。
+
+**风险与缓解：**
+- GitHub Pages 旧地址 404：canonical 已指新域名，可接受。
+- watermask 为空仓库 → 直接推当前树（全新历史），不追求迁移旧历史（用户对站点历史无依赖条件）。
 
 ## 详细设计
 
@@ -46,14 +75,14 @@
     <a href="#feedback">Feedback</a>
   </div>
   <div class="side">
-    <a href="https://github.com/jinnersun/water-mark">GitHub</a>
+    <a href="https://github.com/jinnersun/watermask">GitHub</a>
     <a href="./zh/">中文</a>   <!-- EN 页显示 -->
   </div>
 </nav>
 ```
 
 - ZH 页文本对应中文（首页/示例/隐私政策/反馈/中文链接对应切换 EN）。
-- **stub 页（index.zh.html / examples.zh.html）**: 顶部导航保留，链接语言切换部分指回 EN 主站；这些页无 `#feedback` 锚点 → "反馈"链接指向 `https://github.com/jinnersun/water-mark/issues`。
+- **stub 页（index.zh.html / examples.zh.html）**: 顶部导航保留，链接语言切换部分指回 EN 主站；这些页无 `#feedback` 锚点 → "反馈"链接指向 `https://github.com/jinnersun/watermask/issues`。
 - **隐私页（privacy-policy.html）**: 双语言区块，导航语言切换链接在顶部（非块内）；反馈锚点 `#feedback` 不存在于隐私页 → "反馈"链接指 issues。
 - 原 `.topbar` 若为独立语言切换条，合并进新导航后**删除原条**，避免重复。
 
@@ -97,19 +126,21 @@ Sitemap: https://www.webwatermark.dpdns.org/sitemap.xml
 
 ### 3. GitHub 链接改向
 
-将以下文件中的 `https://github.com/jinnersun/web-watermark-prompt` 改为 `https://github.com/jinnersun/water-mark`（issues 改 `.../water-mark/issues`）：
+**规则：站点内所有** `https://github.com/jinnersun/web-watermark-prompt*` 站内链接 → `https://github.com/jinnersun/watermask*`（issues 改 `.../watermask/issues`）。
 
+涉及文件：
 - `index.html`（CTA"Get early access"、footer GitHub、footer Feedback、反馈区 issues）
 - `zh/index.html`（同 EN，中文文案）
 - `examples.html`、`zh/examples.html`（footer + 反馈区 issues）
 - `privacy-policy.html`（反馈小节 issues 链接，两语言块）
-- 扩展仓库 `src/options.html`（`promptViewSource` 指向 `water-mark` 的 PROMPT.md？——**注意**：扩展里的 AI prompt 源链接指向 `web-watermark-prompt/PROMPT.md` 是**正确**的，因为 prompt 文件在 prompt 仓库。此项**不改**，保持指向 prompt 仓库的 PROMPT.md。仅站点站内 GitHub 链接改向。）
 
-**JSON-LD**：`author.url` / `sameAs` 为 `https://github.com/jinnersun`（个人主页），不改。
+**不改：**
+- 扩展仓库 `water-mark` 源码不动；其 `options.html` 的 AI prompt 源链接指向 prompt 仓库 `web-watermark-prompt/PROMPT.md` 是**正确**的（prompt 文件仍在 prompt 仓库），保持不变。
+- JSON-LD `author.url` / `sameAs` = `https://github.com/jinnersun`（个人主页），不改。
 
 ### 4. 仓库拆分（独立站点仓库）
 
-**目标：** 新仓库 `github.com/jinnersun/web-watermark-site`（待用户确认最终名），仅含部署文件。
+**目标：** 新仓库 `github.com/jinnersun/watermask`（已确认，public 200），仅含部署文件；本地目录 `D:\item\chrome插件\web-watermask`。
 
 **新仓库内容（白名单迁移）：**
 ```
@@ -125,15 +156,15 @@ README.md（重写为站点仓库说明，非 prompt 版）
 
 **执行路径（本地准备好后一次性迁移）：**
 1. 本地继续在 `web-watermark-prompt` 仓库完成导航/robots/链接修正 → commit → push（维持 GH Pages 旧站短暂一致）。
-2. `git clone --bare` 或 `git clone` 站点仓库，新建 `web-watermark-site` 目录；`git filter-branch`/`--orphan` 重建只含白名单文件的历史（或直接用当前 HEAD 的树抽取文件）；push 到新 remote。
-3. 用户确认新仓库名后创建 GitHub 仓库（用户操作，代理无 token）。
-4. CF Pages 改连新仓库（用户操作）。
+2. 在 `D:\item\chrome插件\web-watermask` 初始化 git，添加 **仅部署白名单文件**（从当前站点树拷贝）。
+3. push 到 `https://github.com/jinnersun/watermask.git`（全新历史；用户已确认水印仓库为空，站点历史无依赖）。
+4. 用户操作：CF Pages 改连 `watermask` 仓库。
 5. 新域名线上验证。
 6. 旧 `web-watermark-prompt` 仓库：删除站点部署文件（index.html 等），保留 prompt 内容，更新 README（站点已迁出）；旧 GH Pages 自然失效。
 
 **风险与缓解：**
 - GitHub Pages 旧地址 404：canonical 已指新域名，v2.1 时已建立；可接受。
-- 拆分时历史丢失：站点仓库历史不重要（部署产物），但为可回滚，用带历史方式迁移到新仓库更稳妥（用户已确认"新建独立站点仓库"，未限定历史）。**倾向带完整历史**迁移（`git clone --bare` + `filter-repo` 或直接整仓 clone 后删文件提交一次"清空 prompt 内容"），简单可靠。
+- 拆分时历史丢失：watermask 为空仓库 → 全新历史；旧仓库 git 历史仍保留 prompt 内容，无需迁移。
 
 ### 5. sitemap / GSC
 
