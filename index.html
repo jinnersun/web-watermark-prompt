@@ -338,6 +338,25 @@
     ul.numlist .n { flex-basis: 38px; font-size: 22px; }
     footer p { margin: 12px 0 0; width: 100%; }
   }
+
+  .feedback { padding-top: 72px; }
+  .feedback .feedback-grid { display: flex; gap: 28px; align-items: flex-start; flex-wrap: wrap; }
+  .feedback form { flex: 1 1 420px; display: flex; flex-direction: column; gap: 14px; }
+  .feedback .fb-row { display: flex; flex-direction: column; gap: 5px; }
+  .feedback .fb-row label { font: 600 13px/1.3 var(--mono); color: var(--text-2); }
+  .feedback .fb-row label span { color: var(--muted); font-weight: 400; }
+  .feedback input, .feedback textarea {
+    font: 400 15px/1.5 var(--sans); color: var(--text);
+    padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px;
+    background: var(--bg);
+  }
+  .feedback input:focus, .feedback textarea:focus { outline: 2px solid var(--primary); outline-offset: 1px; }
+  .feedback .fb-alt {
+    flex: 0 0 220px; padding: 18px 20px;
+    border: 1px solid var(--border); border-radius: 12px; background: var(--panel);
+    font-size: 15px;
+  }
+  .feedback .fb-alt p { color: var(--text-2); margin: 0 0 10px; }
 </style>
 </head>
 <body>
@@ -686,6 +705,23 @@
   <p class="shot-note">Screenshot — smart contrast holding up across three backgrounds.</p>
 </section>
 
+<section class="feedback">
+  <h2>Report a problem</h2>
+  <p class="answer">Found a bug or want a feature? The form below lands straight in the author's inbox, or open an issue on GitHub — both work.</p>
+  <div class="feedback-grid">
+    <form data-easyform>
+      <div class="fb-row"><label for="fb-name">Name <span>(optional)</span></label><input type="text" id="fb-name" name="name" autocomplete="name" /></div>
+      <div class="fb-row"><label for="fb-email">Email <span>(optional)</span></label><input type="email" id="fb-email" name="email" autocomplete="email" /></div>
+      <div class="fb-row"><label for="fb-msg">Message</label><textarea id="fb-msg" name="message" required rows="4"></textarea></div>
+      <button type="submit" class="btn btn-primary">Send feedback</button>
+    </form>
+    <div class="fb-alt">
+      <p>Prefer GitHub?</p>
+      <a href="https://github.com/jinnersun/web-watermark-prompt/issues">Open an issue</a>
+    </div>
+  </div>
+</section>
+
 <footer>
   <a href="https://github.com/jinnersun/web-watermark-prompt">GitHub</a>
   <a href="./examples">Examples</a>
@@ -991,6 +1027,8 @@ paintSmart();
   "sameAs": ["https://github.com/jinnersun"]
 }
 </script>
+
+<script src="https://www.easyform.dpdns.org/easyform.js" data-email="wpspps@163.com"></script>
 
 </body>
 </html>
