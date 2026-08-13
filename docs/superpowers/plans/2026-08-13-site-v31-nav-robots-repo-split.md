@@ -475,11 +475,11 @@ for (const f of TARGETS) {
   else if (s.endsWith('\n\n')) err(f + ': double trailing newline');
   if (f.endsWith('.html')) {
     if (s.includes(GH_REPO_OLD)) err(f + ': residual old repo link');
-    if (!s.includes(GH_REPO_NEW)) err(f + ': missing new repo link');
   }
 }
 for (const f of NAV_PAGES) {
   const s = readFileSync(join(ROOT, f), 'utf8');
+  if (!s.includes(GH_REPO_NEW)) err(f + ': missing new repo link');
   if (!s.includes('<nav class="topbar">')) err(f + ': no topbar nav');
 }
 const robots = readFileSync(join(ROOT, 'robots.txt'), 'utf8');
