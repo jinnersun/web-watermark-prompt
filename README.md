@@ -2,9 +2,9 @@
 
 > English | [中文](./README.zh_CN.md)
 
-**Website:** https://jinnersun.github.io/web-watermark-prompt/
+> 站点已迁移到独立仓库 [jinnersun/watermask](https://github.com/jinnersun/watermask)（部署 www.webwatermark.dpdns.org）。本仓库仅包含 prompt 内容。
 
-A ready-to-use prompt for AI assistants (Claude / ChatGPT / Codex / Cursor / Gemini) to help you generate configuration for the **[Web Watermark Tool](https://jinnersun.github.io/web-watermark-prompt/) Chrome extension**.
+A ready-to-use prompt for AI assistants (Claude / ChatGPT / Codex / Cursor / Gemini) to help you generate configuration for the **[Web Watermark Tool](https://www.webwatermark.dpdns.org/) Chrome extension**.
 
 ## What is this?
 
@@ -50,12 +50,12 @@ If you have Web Watermark Tool **v2.0 or later** installed:
 
 ## Feedback & contributions
 
-- Report AI misgeneration cases via [Issues](https://github.com/jinnersun/web-watermark-prompt/issues)
+- Report AI misgeneration cases via [Issues](https://github.com/jinnersun/watermask/issues)
 - Add your own scenario to `EXAMPLES.md` via PR
 - Suggest prompt refinements to improve AI output quality
 
 ## Related
 
-- **Web Watermark Tool** website: https://jinnersun.github.io/web-watermark-prompt/
+- **Web Watermark Tool** website: https://www.webwatermark.dpdns.org/
 - **Chrome Web Store**: not yet published
 - **Source code**: [private for now, will open source after v3.0]

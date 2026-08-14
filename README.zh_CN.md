@@ -2,9 +2,11 @@
 
 > [English](./README.md) | 中文
 
-**官网：** https://jinnersun.github.io/web-watermark-prompt/
+> 站点已迁移到独立仓库 [jinnersun/watermask](https://github.com/jinnersun/watermask)（部署 www.webwatermark.dpdns.org）。本仓库仅包含 prompt 内容。
 
-一份可以直接给 AI 助手（Claude / ChatGPT / Codex / Cursor / Gemini）使用的提示词，帮助你为 **[Web Watermark Tool](https://jinnersun.github.io/web-watermark-prompt/) 网页水印工具** Chrome 扩展生成配置。
+**官网：** https://www.webwatermark.dpdns.org/
+
+一份可以直接给 AI 助手（Claude / ChatGPT / Codex / Cursor / Gemini）使用的提示词，帮助你为 **[Web Watermark Tool](https://www.webwatermark.dpdns.org/) 网页水印工具** Chrome 扩展生成配置。
 
 ## 这是什么？
 
@@ -46,17 +48,16 @@ Web Watermark Tool 通过灵活的匹配规则（域名 / URL 正则 / IP / Cook
 |---|---|
 | [`PROMPT.md`](./PROMPT.md) / [`PROMPT.zh_CN.md`](./PROMPT.zh_CN.md) | 完整的 system prompt。整份复制粘贴给 AI 即可 |
 | [`EXAMPLES.md`](./EXAMPLES.md) / [`EXAMPLES.zh_CN.md`](./EXAMPLES.zh_CN.md) | 5 个真实场景的输入 → 输出示例，作为 few-shot 参考 |
-| [`privacy-policy.html`](./privacy-policy.html) | Chrome Web Store 隐私政策页（用 GitHub Pages 挂载） |
 | [`LICENSE`](./LICENSE) | MIT，可自由 fork / 修改 / 再分发 |
 
 ## 反馈与贡献
 
-- AI 生成错误案例：提 [Issue](https://github.com/jinnersun/web-watermark-prompt/issues)
+- AI 生成错误案例：提 [Issue](https://github.com/jinnersun/watermask/issues)
 - 补充你自己的场景到 `EXAMPLES.md`：欢迎 PR
 - 提示词优化建议：欢迎 PR
 
 ## 相关链接
 
-- **Web Watermark Tool** 官网：https://jinnersun.github.io/web-watermark-prompt/
+- **Web Watermark Tool** 官网：https://www.webwatermark.dpdns.org/
 - **Chrome 应用商店**：尚未上架
 - **扩展源代码**：[v2.0 期间闭源，v3.0 后可能开源]
